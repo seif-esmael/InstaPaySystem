@@ -10,9 +10,7 @@ import java.util.Vector;
  *
  * @author Seif
  */
-public class dummyInstaPayDatabase {
-    private Vector<User> users = new Vector();
-    //-------------------------------------------------------------
+public class dummyBankDatabase extends dummyDatabase {
     public boolean checkExistance(int id)    
     {
         return true;
