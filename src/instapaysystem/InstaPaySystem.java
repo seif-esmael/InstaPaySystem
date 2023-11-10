@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package instapaysystem;
 
 import java.lang.reflect.Array;
@@ -16,54 +12,79 @@ import java.util.regex.Pattern;
  */
 public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI {
     private User currentUser;
-    private boolean loggedIn;
+    private boolean loggedIn = false;
     
     //------------------------------------------        
     public void run()
-    {        
+    {
+        dummyInstaPayDatabase instaDatabase = new dummyInstaPayDatabase();
+        dummyWalletDatabase walletDatabase = new dummyWalletDatabase();
+        dummyBankDatabase bankDatabase = new dummyBankDatabase();
+
         Scanner scanner = new Scanner(System.in);
+        System.out.println("\t\t\t\t________________________________");
         System.out.println("\t\t\t\t***Welcome To InstaPay System***");
         System.out.println("\t\t\t\t________________________________");
-        //------                        
-        if(loggedIn)
+        while(true)
         {
-            
-        }
-        else
-        {
-            while(true)
+            if(loggedIn)
             {
-                System.out.println("1- Register");
-                System.out.println("2- Sign In"); 
-                String choice = scanner.next();
-                if(choice.equals("1")) 
+                while(true)
                 {
-                    register();                    
-                    break;
-                }
-                else if(choice.equals("2"))
-                {
-                    currentUser = signIn();                
-                    break;
-                }
-                else
-                {
-                    System.out.println("Invalid Choice!");
+                    System.out.println("1- Transfer");
+                    System.out.println("2- Inquire about balance");
+                    System.out.println("3- Pay bills");
+                    String choice = scanner.next();
+                    if(choice.equals("1"))
+                    {
+                        register();
+                        break;
+                    }
+                    else if(choice.equals("2"))
+                    {
+                        currentUser = signIn();
+                        break;
+                    }
+                    else
+                    {
+                        System.out.println("Invalid Choice!");
+                    }
                 }
             }
-        }                                
+            else
+            {
+                while(true)
+                {
+                    System.out.println("1- Register");
+                    System.out.println("2- Sign In");
+                    String choice = scanner.next();
+                    if(choice.equals("1"))
+                    {
+                        register();
+                        break;
+                    }
+                    else if(choice.equals("2"))
+                    {
+                        currentUser = signIn();
+                        break;
+                    }
+                    else
+                    {
+                        System.out.println("Invalid Choice!");
+                    }
+                }
+            }
+        }
     }
     //------------------------------------------
     public User register()
     {
         
     }
-    
     public User signIn()
     {
         
     }
-    
     @Override
     public boolean transferToWallet(String mobileNumber, double amount) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -114,9 +135,5 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     //---------------------------------------------------------------
-    public static void main(String[] args) {
-        // TODO code application logic here        
-        InstaPaySystem i = new InstaPaySystem();
-        i.run();
-    }        
+
 }
