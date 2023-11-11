@@ -8,6 +8,7 @@ package instapaysystem;
  *
  * @author Seif
  */
-public interface billsPayment {
-    void pay();
+public interface billsPayment
+{
+    boolean pay(double amount);
 }

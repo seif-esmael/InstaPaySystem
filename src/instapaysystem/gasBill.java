@@ -3,15 +3,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package instapaysystem;
+import java.util.Random;
 
-/**
- *
- * @author Seif
- */
-public class gasBill implements billsPayment {
-    private double amount;
-    @Override
-    public void pay() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }    
+public class gasBill extends bill
+{
+    gasBill()
+    {
+        type = "gas";
+        Random random = new Random();
+        amount = random.nextFloat((1000 - 100) + 1) + 100;
+    }
 }

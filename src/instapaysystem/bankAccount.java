@@ -8,6 +8,11 @@ package instapaysystem;
  *
  * @author Seif
  */
-public class bankAccount extends Account {
+public class bankAccount extends Account
+{
     private int bankAccountID;
+    public int getBankAccountID()
+    {
+        return bankAccountID;
+    }
 }

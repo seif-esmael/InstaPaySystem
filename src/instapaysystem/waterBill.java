@@ -4,14 +4,18 @@
  */
 package instapaysystem;
 
+import java.util.Random;
+
 /**
  *
  * @author Seif
  */
-public class waterBill implements billsPayment {
-    private double amount;
-    @Override
-    public void pay() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }    
+public class waterBill extends bill
+{
+    waterBill()
+    {
+        type = "water";
+        Random random = new Random();
+        amount = random.nextFloat((200 - 50) + 1) + 50;
+    }
 }

@@ -1,33 +1,56 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package instapaysystem;
-
 import java.util.Vector;
-
-/**
- *
- * @author Seif
- */
-public class dummyWalletDatabase extends dummyDatabase {        
+public class dummyWalletDatabase extends dummyDatabase
+{
     public boolean checkExistance(String mobileNumber)    
     {
-        return true;
+        for(Account a : accounts)
+        {
+            if(((walletAccount) a).getMobileNumber().equals(mobileNumber))
+            {
+                return true;
+            }
+        }
+        return false;
     }
-    
-    public boolean checkBalance(String mobileNumber,double balance)
+    public boolean checkBalance(String mobileNumber, double amount)
     {
-        return true;
+        for(Account a : accounts)
+        {
+            if(((walletAccount) a).getMobileNumber().equals(mobileNumber))
+            {
+                if(((walletAccount) a).getBalance() < amount)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
-    
-    public void addCredit(String mobileNumber,double amount)
+    public void addCredit(String mobileNumber, double amount)
     {
-        
+        for(Account a : accounts)
+        {
+            if(((walletAccount) a).getMobileNumber().equals(mobileNumber))
+            {
+                ((walletAccount) a).setBalance(((walletAccount) a).getBalance() + amount);
+                break;
+            }
+        }
     }
-    
-    public void removeCredit(String mobileNumber,double amount)
+    public void removeCredit(String mobileNumber, double amount)
     {
-        
+        for(Account a : accounts)
+        {
+            if(((walletAccount) a).getMobileNumber().equals(mobileNumber))
+            {
+                ((walletAccount) a).setBalance(((walletAccount) a).getBalance() - amount);
+                break;
+            }
+        }
     }
 }

@@ -8,7 +8,8 @@ package instapaysystem;
  *
  * @author Seif
  */
-public enum userType {
+public enum userType
+{
     instaPayBankUser,
     instaPayWalletUser,
 }

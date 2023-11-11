@@ -1,33 +1,56 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package instapaysystem;
-
 import java.util.Vector;
-
-/**
- *
- * @author Seif
- */
-public class dummyBankDatabase extends dummyDatabase {
-    public boolean checkExistance(int id)    
+public class dummyBankDatabase extends dummyDatabase
+{
+    public boolean checkExistance(int id)
     {
-        return true;
+        for(Account a : accounts)
+        {
+            if(((bankAccount) a).getBankAccountID() == id)
+            {
+                return true;
+            }
+        }
+        return false;
     }
-    
-    public boolean checkBalance(int id,double amount)
+    public boolean checkBalance(int id, double amount)
     {
-        return true;
+        for(Account a : accounts)
+        {
+            if(((bankAccount) a).getBankAccountID() == id)
+            {
+                if(((bankAccount) a).getBalance() < amount)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        return false;
     }
-    
-    public void addCredit(int id,double amount)
+    public void addCredit(int id, double amount)
     {
-        
+        for(Account a : accounts)
+        {
+            if(((bankAccount) a).getBankAccountID() == id)
+            {
+                a.setBalance(a.getBalance() + amount);
+                break;
+            }
+        }
     }
-    
-    public void removeCredit(int id,double amount)
+    public void removeCredit(int id, double amount)
     {
-        
+        for(Account a : accounts)
+        {
+            if(((bankAccount) a).getBankAccountID() == id)
+            {
+                a.setBalance(a.getBalance() - amount);
+                break;
+            }
+        }
     }
 }

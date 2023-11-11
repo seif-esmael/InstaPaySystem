@@ -5,25 +5,16 @@ import java.util.Scanner;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-/**
- *
- * @author Seif
- */
-public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI {
+public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
+{
     private User currentUser;
     private boolean loggedIn = false;
-    
     //------------------------------------------        
     public void run()
     {
-        dummyInstaPayDatabase instaDatabase = new dummyInstaPayDatabase();
-        dummyWalletDatabase walletDatabase = new dummyWalletDatabase();
-        dummyBankDatabase bankDatabase = new dummyBankDatabase();
-
         Scanner scanner = new Scanner(System.in);
         System.out.println("\t\t\t\t________________________________");
-        System.out.println("\t\t\t\t***Welcome To InstaPay System***");
+        System.out.println("\t\t\t\t---Welcome To InstaPay System---");
         System.out.println("\t\t\t\t________________________________");
         while(true)
         {
@@ -37,13 +28,35 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI {
                     String choice = scanner.next();
                     if(choice.equals("1"))
                     {
-                        register();
-                        break;
+
                     }
                     else if(choice.equals("2"))
                     {
-                        currentUser = signIn();
+                        System.out.println("Your current balance is: " + currentUser.getBalance());
                         break;
+                    }
+                    else if(choice.equals("3"))
+                    {
+                        while(true)
+                        {
+                            System.out.println("Your bills are: ");
+                            double price = currentUser.printBills();
+                            System.out.println("1- Pay");
+                            System.out.println("2- Back");
+                            String c = scanner.next();
+                            if(c.equals("1"))
+                            {
+                                currentUser.pay(price);
+                            }
+                            else if(c.equals("2"))
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                System.out.println("Invalid Choice!");
+                            }
+                        }
                     }
                     else
                     {
@@ -79,11 +92,11 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI {
     //------------------------------------------
     public User register()
     {
-        
+        return new instaPayBankUser();
     }
     public User signIn()
     {
-        
+        return new instaPayBankUser();
     }
     @Override
     public boolean transferToWallet(String mobileNumber, double amount) {
