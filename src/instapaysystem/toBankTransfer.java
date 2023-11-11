@@ -4,10 +4,7 @@
  */
 package instapaysystem;
 
-/**
- *
- * @author Seif
- */
+
 public interface toBankTransfer {
     public void transfer();
 }

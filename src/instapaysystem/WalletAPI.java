@@ -4,10 +4,7 @@
  */
 package instapaysystem;
 
-/**
- *
- * @author Seif
- */
+
 public interface WalletAPI {
     public boolean transferToWallet(String mobileNumber,double amount);
     public boolean search(String mobileNumber);

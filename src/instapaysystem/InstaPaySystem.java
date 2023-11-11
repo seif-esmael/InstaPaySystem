@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
 {
     private User currentUser;
+    private int idsforusers=100;
     private boolean loggedIn = false;
     //------------------------------------------        
     public void run()
@@ -90,16 +91,90 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
         }
     }
     //------------------------------------------
-    public User register()
-    {
-        return new instaPayBankUser();
+    public User register() {
+        Scanner data = new Scanner(System.in);
+        System.out.println("1-)Register using your bank account\n2-)Register using your eWallet\n");
+        String choice = data.next();
+        if (choice.equals("1")) {
+            String bank_email, bank_password, bank_phone_number, email, password;
+
+            System.out.print("Enter the Bank's Email: ");
+            bank_email = data.next();
+            System.out.println();
+            //-----------------------------------------------------
+            System.out.print("Enter the Bank's Password: ");
+            bank_password = data.next();
+            System.out.println();
+            //-----------------------------------------------------
+            System.out.print("Enter the Bank's Phone number: ");
+            bank_phone_number = data.next();
+            System.out.println();
+
+
+            if(search(bank_email,bank_password,bank_phone_number))
+            {
+                System.out.print("Enter Email: ");
+                email = data.next();
+                System.out.println();
+                //-----------------------------------------------------
+                System.out.print("Enter Password: ");
+                password = data.next();
+                System.out.println();
+                double bank_balance = ((bankAccount)getAcc(bank_email,bank_password,bank_phone_number)).getBalance();
+                int bank_ID = ((bankAccount)getAcc(bank_email,bank_password,bank_phone_number)).getBankAccountID();
+
+                instaPayBankUser myuser = new instaPayBankUser(email,password,bank_phone_number,idsforusers++,bank_balance,bank_ID);
+                addUser(myuser);
+            }
+            else {
+                System.out.println("User not found in bank!");
+            }
+
+        }
+
+
     }
     public User signIn()
     {
-        return new instaPayBankUser();
+        Scanner data = new Scanner (System.in);
+        System.out.println("Email: ");
+        String email = data.next();
+        System.out.println("Password: ");
+        String password = data.next();
+        String url = "jdbc:sqlserver://SEIFELDEEN:1433;databaseName=Toffee;user=sa;password=sa123456;encrypt=false;";
+        boolean notfound = true;
+        try {
+            Connection con = DriverManager.getConnection(url);
+            String sql = "SELECT * FROM Data_Of_Registration WHERE email = ? AND password = ?";
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setString(1, email);
+            statement.setString(2, password);
+            ResultSet result = statement.executeQuery();
+            if(notfound)
+            {
+                if (result.next()) {
+                    System.out.println("Loggedin Successfully!");
+                    isLoggedIn = true;
+//                    notfound = false;
+                    return true;
+                }
+                else
+                {
+                    System.out.println("Login failed, invalid email or password!");
+                    isLoggedIn = false;
+//                    notfound = true;
+                    return false;
+                }
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("Error connecting to database: " + e.getMessage());
+            return false;
+        }
+        return false;
     }
     @Override
-    public boolean transferToWallet(String mobileNumber, double amount) {
+    public boolean transferToBank(int ID, double amount) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -114,13 +189,13 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
     }
 
     @Override
-    public void transferInstaPay(int ID, double amount) {
+    public void transfertoInstaPay(int ID, double amount) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void addUser(User u) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        database.instaDatabase.adduser(u);
     }
 
     @Override
@@ -134,7 +209,7 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
     }
 
     @Override
-    public boolean transferToWallet(int ID, double amount) {
+    public boolean transferToWallet(String mobilenumber, double amount) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

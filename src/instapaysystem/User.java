@@ -5,12 +5,13 @@ import java.util.Vector;
 public abstract class User implements billsPayment
 {
     protected String userName;
-    protected String Password;
+    protected String password;
     protected String mobileNumber;
     protected int instaPayID;
     protected double balance;
     protected Vector<bill> bills = new Vector();
     protected userType type;
+
     //-------------------------------------------------
     public void deposit(double amount)
     {

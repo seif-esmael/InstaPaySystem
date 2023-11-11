@@ -16,6 +16,10 @@ public class dummyInstaPayDatabase
         }
         return false;
     }
+    public void adduser(User u)
+    {
+        users.add(u);
+    }
     public boolean checkBalance(int id,double amount)
     {
         for(User u : users)

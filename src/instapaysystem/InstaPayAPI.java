@@ -4,12 +4,8 @@
  */
 package instapaysystem;
 
-/**
- *
- * @author Seif
- */
 public interface InstaPayAPI {
-    public void transferInstaPay(int ID,double amount);
+    public void transfertoInstaPay(int ID,double amount);
     public void addUser(User u);
     public boolean search(String userName,String password);
     public User getUser(String userName,String password);

@@ -4,12 +4,28 @@
  */
 package instapaysystem;
 
+import java.util.Random;
+
 /**
  *
  * @author Seif
  */
 public class instaPayBankUser extends User
 {
+    instaPayBankUser(String username,String password,String mobilenumber,int instapayID,double balance, int bankID)
+    {
+        this.userName=username;
+        this.password=password;
+        this.mobileNumber = mobilenumber;
+        this.type = userType.instaPayBankUser;
+        this.instaPayID=instapayID;
+        this.bills.add(new waterBill());
+        this.bills.add(new gasBill());
+        this.bills.add(new electricityBill());
+        this.bankAccountID = bankID;
+        this.balance = balance;
+
+    }
     private int bankAccountID;
     //-----------------------------------------
     public boolean pay(double amount)
