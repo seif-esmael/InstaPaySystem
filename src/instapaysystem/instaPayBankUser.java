@@ -1,15 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package instapaysystem;
 
 import java.util.Random;
 
-/**
- *
- * @author Seif
- */
 public class instaPayBankUser extends User
 {
     private int bankAccountID;
@@ -34,6 +26,11 @@ public class instaPayBankUser extends User
         {
             System.out.println("Your balance is not enough!");
             return false;
+        }
+        if(bills.size() == 0)
+        {
+            System.out.println("There is no bills!");
+            return true;
         }
         balance -= amount;
         database.bankDatabase.removeCredit(bankAccountID,amount);

@@ -15,5 +15,4 @@ public class main
         InstaPaySystem i = new InstaPaySystem();
         i.run();
     }
-        
 }

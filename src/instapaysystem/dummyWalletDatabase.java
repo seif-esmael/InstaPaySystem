@@ -4,12 +4,14 @@ public class dummyWalletDatabase extends dummyDatabase
 {
     dummyWalletDatabase()
     {
+        //--------------------------------------------------------------------------------------------------------------
         Account youssef = new walletAccount();
         youssef.setUserName("youssef");
-        youssef.setPassword("youssefooo");
-        youssef.setMobileNumber("01222");
+        youssef.setPassword("youssefabdullah");
+        youssef.setMobileNumber("01233456789");
         youssef.setBalance(2000);
         accounts.add(youssef);
+        //--------------------------------------------------------------------------------------------------------------
     }
     public boolean checkExistance(String mobileNumber)    
     {

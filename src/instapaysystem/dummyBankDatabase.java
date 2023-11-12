@@ -4,20 +4,23 @@ public class dummyBankDatabase extends dummyDatabase
 {
     dummyBankDatabase()
     {
-        Account acc = new bankAccount();
-        acc.setUserName("kero");
-        acc.setPassword("kerooo");
-        acc.setMobileNumber("012");
-        acc.setBalance(1000);
-        ((bankAccount) acc).setBankAccountID(1);
-        accounts.add(acc);
+        //--------------------------------------------------------------------------------------------------------------
+        Account kero = new bankAccount();
+        kero.setUserName("kirlos");
+        kero.setPassword("kirlosnabil");
+        kero.setMobileNumber("01234567890");
+        kero.setBalance(1500);
+        ((bankAccount) kero).setBankAccountID(223);
+        accounts.add(kero);
+        //--------------------------------------------------------------------------------------------------------------
         Account seif = new bankAccount();
         seif.setUserName("seif");
-        seif.setPassword("seifooo");
-        seif.setMobileNumber("0122");
-        ((bankAccount) seif).setBankAccountID(2);
+        seif.setPassword("seifmohamed");
+        seif.setMobileNumber("01223456789");
+        ((bankAccount) seif).setBankAccountID(129);
         seif.setBalance(1000);
         accounts.add(seif);
+        //--------------------------------------------------------------------------------------------------------------
     }
     public boolean checkExistance(int id)
     {
