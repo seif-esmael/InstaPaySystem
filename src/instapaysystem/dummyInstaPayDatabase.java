@@ -60,4 +60,9 @@ public class dummyInstaPayDatabase
             }
         }
     }
+    
+    public Vector<User> getUsers()
+    {
+        return users;
+    }
 }

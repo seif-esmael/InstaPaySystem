@@ -179,7 +179,7 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
                     }
                     else if(choice.equals("4"))
                     {
-
+                        
                     }
                     else if(choice.equals("5"))
                     {
@@ -187,7 +187,9 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
                     }
                     else if(choice.equals("6"))
                     {
-
+                        loggedIn = false;
+                        currentUser = null;
+                        break;
                     }
                     else if(choice.equals("7"))
                     {
@@ -338,28 +340,8 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
         }
         return null;
     }
-    //------------------------------------------------------------------------------------------------------------------
-    @Override
-    public boolean transferToBank(int ID, double amount)
-    {
-        if(!database.bankDatabase.checkExistance(ID))
-        {
-            System.out.println("Couldn't find the user you want to transfer to!");
-            return false;
-        }
-        if(!database.bankDatabase.checkBalance(((instaPayBankUser)currentUser).getBankAccountID(),amount))
-        {
-            System.out.println("Your balance is not enough!");
-            return false;
-        }
-        database.bankDatabase.addCredit(ID,amount);
-        database.bankDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
-        database.instaDatabase.addCredit(ID,amount);
-        database.instaDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
-        currentUser.updateBalance(-amount);
-        return true;
-    }
-    //------------------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------        
+    // **This Section for InstaPayAPI**    
     @Override
     public boolean transfertoInstaPay(int ID, double amount)
     {
@@ -373,13 +355,13 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
             System.out.println("Your balance is not enough!");
             return false;
         }
-        if(getUser(ID,"insta").type.equals(userType.instaPayBankUser))
+        if(getUser(ID).type.equals(userType.instaPayBankUser))
         {
             database.bankDatabase.addCredit(ID,amount);
         }
         else
         {
-            database.walletDatabase.addCredit(getUser(ID,"insta").mobileNumber,amount);
+            database.walletDatabase.addCredit(getUser(ID).mobileNumber,amount);
         }
         if(currentUser.type.equals(userType.instaPayBankUser))
         {
@@ -390,11 +372,98 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
             database.walletDatabase.removeCredit(currentUser.mobileNumber,amount);
         }
         database.instaDatabase.addCredit(ID,amount);
-        database.instaDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
+        database.instaDatabase.removeCredit(currentUser.getInstaID(),amount);
         currentUser.updateBalance(-amount);
         return true;
     }
+    
+    @Override
+    public void addUser(User u) {
+        database.instaDatabase.adduser(u);
+    }
+    
+    @Override
+    public boolean search(String userName, String password) {
+        for(User u : database.instaDatabase.getUsers())
+        {
+            if(u.userName.equals(userName) && u.password.equals(password))
+            {
+                return true;
+            }            
+        }
+        return false;
+    }
+    
+    @Override
+    public User getUser(String userName, String password) {
+        for(User u : database.instaDatabase.getUsers())
+        {
+            if(u.userName.equals(userName) && u.password.equals(password))
+            {
+                return u;
+            }            
+        }
+        return null;
+    }
+    
+    public User getUser(String mobileNumber) {
+        for(User u : database.instaDatabase.getUsers())
+        {
+            if(u.mobileNumber.equals(mobileNumber))
+            {
+                return u;
+            }            
+        }
+        return null;
+    }
+    
+    public User getUser(int ID) {
+        for(User u : database.instaDatabase.getUsers())
+        {
+            if(u.instaPayID == ID)
+            {
+                return u;
+            }            
+        }
+        return null;
+    }
+    
+    @Override
+    public boolean deposit(double amount)
+    {
+        database.instaDatabase.addCredit(currentUser.instaPayID, amount);
+        currentUser.updateBalance(amount);
+        if(currentUser.type.equals(userType.instaPayBankUser))
+        {
+            database.bankDatabase.addCredit(((instaPayBankUser)currentUser).getBankAccountID(), amount);            
+        }
+        else
+        {
+            database.walletDatabase.addCredit(currentUser.mobileNumber, amount);
+        }
+        return true;
+    }
+    
+    public boolean withdraw(double amount)
+    {
+        if(!database.instaDatabase.checkBalance(currentUser.getInstaID(), amount))
+        {
+            return false;
+        }
+        database.instaDatabase.removeCredit(currentUser.instaPayID, amount);
+        currentUser.updateBalance(-amount);
+        if(currentUser.type.equals(userType.instaPayBankUser))
+        {
+            database.bankDatabase.removeCredit(((instaPayBankUser)currentUser).getBankAccountID(), amount);            
+        }
+        else
+        {
+            database.walletDatabase.removeCredit(currentUser.mobileNumber, amount);
+        }
+        return true;
+    }
     //------------------------------------------------------------------------------------------------------------------
+    // **This Section for WalletAPI**
     @Override
     public boolean transferToWallet(String mobilenumber, double amount)
     {
@@ -430,49 +499,76 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
         currentUser.updateBalance(-amount);
         return true;
     }
-    //------------------------------------------------------------------------------------------------------------------
+    
     @Override
     public boolean search(String mobileNumber) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for(Account a : database.walletDatabase.getAccounts())
+        {
+            if(((walletAccount) a).getMobileNumber().equals(mobileNumber))
+            {
+                return true;
+            }
+        }
+        return false;
     }
-    //------------------------------------------------------------------------------------------------------------------
-    @Override
-    public void addUser(User u) {
-        database.instaDatabase.adduser(u);
-    }
-    //------------------------------------------------------------------------------------------------------------------
-    @Override
-    public boolean search(String userName, String password) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    //------------------------------------------------------------------------------------------------------------------
-    @Override
-    public User getUser(String userName, String password) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    //------------------------------------------------------------------------------------------------------------------
-    public User getUser(int ID, String which) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    //------------------------------------------------------------------------------------------------------------------
-    public User getUser(String mobileNumber) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    //------------------------------------------------------------------------------------------------------------------
+    
     @Override
     public Account getAcc(String mobileNumber) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for(Account a : database.walletDatabase.getAccounts())
+        {
+            if(((walletAccount) a).getMobileNumber().equals(mobileNumber))            
+            {
+                return a;
+            }
+        }
+        return null;
+    }    
+    //------------------------------------------------------------------------------------------------------------------  
+    // **This Section for BankAPI** 
+    @Override
+    public boolean transferToBank(int ID, double amount)
+    {
+        if(!database.bankDatabase.checkExistance(ID))
+        {
+            System.out.println("Couldn't find the user you want to transfer to!");
+            return false;
+        }
+        if(!database.bankDatabase.checkBalance(((instaPayBankUser)currentUser).getBankAccountID(),amount))
+        {
+            System.out.println("Your balance is not enough!");
+            return false;
+        }
+        database.bankDatabase.addCredit(ID,amount);
+        database.bankDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
+        database.instaDatabase.addCredit(ID,amount);
+        database.instaDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
+        currentUser.updateBalance(-amount);
+        return true;
     }
-    //------------------------------------------------------------------------------------------------------------------
+    
     @Override
     public boolean search(String userName, String password, String mobileNumber) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for(Account a : database.bankDatabase.getAccounts())
+        {
+            if(((bankAccount)a).getUserName().equals(userName) && ((bankAccount)a).getPassword().equals(password) && ((bankAccount)a).getMobileNumber().equals(mobileNumber))
+            {
+                return true;
+            }
+        }
+        return false;
     }
-    //------------------------------------------------------------------------------------------------------------------
+    
     @Override
     public Account getAcc(String userName, String password, String mobileNumber)
     {
-
+        for(Account a : database.bankDatabase.getAccounts())
+        {
+            if(((bankAccount)a).getUserName().equals(userName) && ((bankAccount)a).getPassword().equals(password) && ((bankAccount)a).getMobileNumber().equals(mobileNumber))
+            {
+                return a;
+            }
+        }
+        return null;
     }
-    //------------------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------         
 }

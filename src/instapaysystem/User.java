@@ -11,15 +11,7 @@ public abstract class User implements billsPayment
     protected double balance;
     protected Vector<bill> bills = new Vector();
     protected userType type;
-
-    //-------------------------------------------------
-    public void deposit(double amount)
-    {
-        balance += amount;
-    }
-    //-------------------------------------------------
-    public abstract boolean withdraw(double amount);
-    //-------------------------------------------------
+    //-------------------------------------------------        
     public double getBalance()
     {
         return balance;
