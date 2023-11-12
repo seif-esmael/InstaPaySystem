@@ -12,7 +12,9 @@ import java.util.Random;
  */
 public class instaPayBankUser extends User
 {
-    instaPayBankUser(String username,String password,String mobilenumber,int instapayID,double balance, int bankID)
+    private int bankAccountID;
+    //-----------------------------------------
+    instaPayBankUser(String username, String password, String mobilenumber, int instapayID, double balance, int bankID)
     {
         this.userName=username;
         this.password=password;
@@ -26,8 +28,6 @@ public class instaPayBankUser extends User
         this.balance = balance;
 
     }
-    private int bankAccountID;
-    //-----------------------------------------
     public boolean pay(double amount)
     {
         bills.clear();
