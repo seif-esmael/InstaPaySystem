@@ -56,7 +56,7 @@ public class instaPayBankUser extends User
         super.deposit(amount);
         database.bankDatabase.addCredit(bankAccountID,amount);
     }
-    public int getID()
+    public int getBankAccountID()
     {
         return bankAccountID;
     }

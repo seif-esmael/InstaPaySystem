@@ -5,12 +5,13 @@ import java.util.Scanner;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
 {
     private User currentUser;
     private int idsforusers = 100;
     private boolean loggedIn = false;
-    //------------------------------------------        
+    //------------------------------------------------------------------------------------------------------------------
     public void run()
     {
         Scanner scanner = new Scanner(System.in);
@@ -19,6 +20,11 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
         System.out.println("\t\t\t\t________________________________");
         while(true)
         {
+            boolean exit = false;
+            if(exit)
+            {
+                break;
+            }
             if(loggedIn)
             {
                 while(true)
@@ -26,10 +32,122 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
                     System.out.println("1- Transfer");
                     System.out.println("2- Inquire about balance");
                     System.out.println("3- Pay bills");
+                    System.out.println("4- deposit");
+                    System.out.println("5- Withdraw");
+                    System.out.println("6- Logout");
+                    System.out.println("7- Exit");
                     String choice = scanner.next();
                     if(choice.equals("1"))
                     {
-
+                        while(true)
+                        {
+                            if(currentUser.type.equals(userType.instaPayBankUser))
+                            {
+                                System.out.println("1- Transfer to bank account");
+                                System.out.println("2- Transfer to wallet");
+                                System.out.println("3- Transfer to InstaPay account");
+                                System.out.println("4- Back");
+                                String c = scanner.next();
+                                if(c.equals("1"))
+                                {
+                                    System.out.print("Enter Bank ID of user you want to transfer to: ");
+                                    int id = scanner.nextInt();
+                                    System.out.print("Enter amount you want to transfer: ");
+                                    int amount = scanner.nextInt();
+                                    if(transferToBank(id,amount))
+                                    {
+                                        System.out.println("Transfer was successfully done!");
+                                    }
+                                    else
+                                    {
+                                        System.out.println("Transfer couldn't be completed!");
+                                    }
+                                }
+                                else if(c.equals("2"))
+                                {
+                                    System.out.print("Enter mobile number of user you want to transfer to: ");
+                                    String mobileNumber = scanner.next();
+                                    System.out.print("Enter amount you want to transfer: ");
+                                    int amount = scanner.nextInt();
+                                    if(transferToWallet(mobileNumber,amount))
+                                    {
+                                        System.out.println("Transfer was successfully done!");
+                                    }
+                                    else
+                                    {
+                                        System.out.println("Transfer couldn't be completed!");
+                                    }
+                                }
+                                else if(c.equals("3"))
+                                {
+                                    System.out.print("Enter InstaPay ID of user you want to transfer to: ");
+                                    int id = scanner.nextInt();
+                                    System.out.print("Enter amount you want to transfer: ");
+                                    int amount = scanner.nextInt();
+                                    if(transfertoInstaPay(id,amount))
+                                    {
+                                        System.out.println("Transfer was successfully done!");
+                                    }
+                                    else
+                                    {
+                                        System.out.println("Transfer couldn't be completed!");
+                                    }
+                                }
+                                else if(c.equals("4"))
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    System.out.println("Invalid choice!");
+                                }
+                            }
+                            else
+                            {
+                                System.out.println("1- Transfer to wallet");
+                                System.out.println("2- Transfer to InstaPay account");
+                                System.out.println("3- Back");
+                                String c = scanner.next();
+                                if(c.equals("1"))
+                                {
+                                    System.out.print("Enter mobile number of user you want to transfer to: ");
+                                    String mobileNumber = scanner.next();
+                                    System.out.print("Enter amount you want to transfer: ");
+                                    int amount = scanner.nextInt();
+                                    if(transferToWallet(mobileNumber,amount))
+                                    {
+                                        System.out.println("Transfer was successfully done!");
+                                    }
+                                    else
+                                    {
+                                        System.out.println("Transfer couldn't be completed!");
+                                    }
+                                }
+                                else if(c.equals("2"))
+                                {
+                                    System.out.print("Enter InstaPay ID of user you want to transfer to: ");
+                                    int id = scanner.nextInt();
+                                    System.out.print("Enter amount you want to transfer: ");
+                                    int amount = scanner.nextInt();
+                                    if(transfertoInstaPay(id,amount))
+                                    {
+                                        System.out.println("Transfer was successfully done!");
+                                    }
+                                    else
+                                    {
+                                        System.out.println("Transfer couldn't be completed!");
+                                    }
+                                }
+                                else if(c.equals("3"))
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    System.out.println("Invalid choice!");
+                                }
+                            }
+                        }
                     }
                     else if(choice.equals("2"))
                     {
@@ -59,6 +177,23 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
                             }
                         }
                     }
+                    else if(choice.equals("4"))
+                    {
+
+                    }
+                    else if(choice.equals("5"))
+                    {
+
+                    }
+                    else if(choice.equals("6"))
+                    {
+
+                    }
+                    else if(choice.equals("7"))
+                    {
+                        exit = true;
+                        break;
+                    }
                     else
                     {
                         System.out.println("Invalid Choice!");
@@ -69,8 +204,13 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
             {
                 while(true)
                 {
+                    if(loggedIn)
+                    {
+                        break;
+                    }
                     System.out.println("1- Register");
                     System.out.println("2- Sign In");
+                    System.out.println("3- Exit");
                     String choice = scanner.next();
                     if(choice.equals("1"))
                     {
@@ -90,6 +230,11 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
                         }
                         break;
                     }
+                    else if(choice.equals("3"))
+                    {
+                        exit = true;
+                        break;
+                    }
                     else
                     {
                         System.out.println("Invalid Choice!");
@@ -98,7 +243,7 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
             }
         }
     }
-    //------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------
     public User register()
     {
         Scanner data = new Scanner(System.in);
@@ -128,7 +273,7 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
                 System.out.print("Enter Password: ");
                 password = data.next();
                 System.out.println();
-                double bank_balance = ((bankAccount)getAcc(bank_email,bank_password,bank_phone_number)).getBalance();
+                double bank_balance = (getAcc(bank_email,bank_password,bank_phone_number)).getBalance();
                 int bank_ID = ((bankAccount)getAcc(bank_email,bank_password,bank_phone_number)).getBankAccountID();
 
                 instaPayBankUser myuser = new instaPayBankUser(email,password,bank_phone_number,idsforusers++,bank_balance,bank_ID);
@@ -155,7 +300,7 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
                 System.out.print("Enter Password: ");
                 password = data.next();
                 System.out.println();
-                double ewallet_balance = ((walletAccount)getAcc(eWallet_phone_number)).getBalance();
+                double ewallet_balance = (getAcc(eWallet_phone_number)).getBalance();
                 instaPayWalletUser myuser = new instaPayWalletUser(email,password,eWallet_phone_number,idsforusers++,ewallet_balance);
                 return myuser;
             }
@@ -170,6 +315,7 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
         }
         return null;
     }
+    //------------------------------------------------------------------------------------------------------------------
     public User signIn()
     {
         Scanner data = new Scanner(System.in);
@@ -183,6 +329,7 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
         System.out.println();
         if(search(email,password))
         {
+            loggedIn = true;
             return getUser(email,password);
         }
         else
@@ -191,55 +338,141 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
         }
         return null;
     }
+    //------------------------------------------------------------------------------------------------------------------
     @Override
-    public boolean transferToBank(int ID, double amount) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean transferToBank(int ID, double amount)
+    {
+        if(!database.bankDatabase.checkExistance(ID))
+        {
+            System.out.println("Couldn't find the user you want to transfer to!");
+            return false;
+        }
+        if(!database.bankDatabase.checkBalance(((instaPayBankUser)currentUser).getBankAccountID(),amount))
+        {
+            System.out.println("Your balance is not enough!");
+            return false;
+        }
+        database.bankDatabase.addCredit(ID,amount);
+        database.bankDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
+        database.instaDatabase.addCredit(ID,amount);
+        database.instaDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
+        currentUser.updateBalance(-amount);
+        return true;
     }
-
+    //------------------------------------------------------------------------------------------------------------------
+    @Override
+    public boolean transfertoInstaPay(int ID, double amount)
+    {
+        if(!database.instaDatabase.checkExistance(ID))
+        {
+            System.out.println("Couldn't find the user you want to transfer to!");
+            return false;
+        }
+        if(!database.instaDatabase.checkBalance(currentUser.getInstaID(),amount))
+        {
+            System.out.println("Your balance is not enough!");
+            return false;
+        }
+        if(getUser(ID,"insta").type.equals(userType.instaPayBankUser))
+        {
+            database.bankDatabase.addCredit(ID,amount);
+        }
+        else
+        {
+            database.walletDatabase.addCredit(getUser(ID,"insta").mobileNumber,amount);
+        }
+        if(currentUser.type.equals(userType.instaPayBankUser))
+        {
+            database.bankDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
+        }
+        else
+        {
+            database.walletDatabase.removeCredit(currentUser.mobileNumber,amount);
+        }
+        database.instaDatabase.addCredit(ID,amount);
+        database.instaDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
+        currentUser.updateBalance(-amount);
+        return true;
+    }
+    //------------------------------------------------------------------------------------------------------------------
+    @Override
+    public boolean transferToWallet(String mobilenumber, double amount)
+    {
+        if(!database.walletDatabase.checkExistance(mobilenumber))
+        {
+            System.out.println("Couldn't find the user you want to transfer to!");
+            return false;
+        }
+        if(currentUser.type.equals(userType.instaPayBankUser))
+        {
+            if(!database.bankDatabase.checkBalance(((instaPayBankUser) currentUser).getBankAccountID(),amount))
+            {
+                System.out.println("Your balance is not enough!");
+                return false;
+            }
+            database.bankDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
+        }
+        else
+        {
+            if(!database.walletDatabase.checkBalance(currentUser.mobileNumber,amount))
+            {
+                System.out.println("Your balance is not enough!");
+                return false;
+            }
+            database.walletDatabase.removeCredit(currentUser.mobileNumber,amount);
+        }
+        database.walletDatabase.addCredit(mobilenumber,amount);
+        if(database.instaDatabase.checkExistance(getUser(mobilenumber).getInstaID()))
+        {
+            database.instaDatabase.addCredit(getUser(mobilenumber).getInstaID(),amount);
+        }
+        database.instaDatabase.removeCredit(currentUser.getInstaID(),amount);
+        currentUser.updateBalance(-amount);
+        return true;
+    }
+    //------------------------------------------------------------------------------------------------------------------
     @Override
     public boolean search(String mobileNumber) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
-    @Override
-    public Account getAcc(String mobileNumber) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void transfertoInstaPay(int ID, double amount) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    //------------------------------------------------------------------------------------------------------------------
     @Override
     public void addUser(User u) {
         database.instaDatabase.adduser(u);
     }
-
+    //------------------------------------------------------------------------------------------------------------------
     @Override
     public boolean search(String userName, String password) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    //------------------------------------------------------------------------------------------------------------------
     @Override
     public User getUser(String userName, String password) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
-    @Override
-    public boolean transferToWallet(String mobilenumber, double amount) {
+    //------------------------------------------------------------------------------------------------------------------
+    public User getUser(int ID, String which) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    //------------------------------------------------------------------------------------------------------------------
+    public User getUser(String mobileNumber) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    //------------------------------------------------------------------------------------------------------------------
+    @Override
+    public Account getAcc(String mobileNumber) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    //------------------------------------------------------------------------------------------------------------------
     @Override
     public boolean search(String userName, String password, String mobileNumber) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    //------------------------------------------------------------------------------------------------------------------
     @Override
-    public Account getAcc(String userName, String password, String mobileNumber) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    //---------------------------------------------------------------
+    public Account getAcc(String userName, String password, String mobileNumber)
+    {
 
+    }
+    //------------------------------------------------------------------------------------------------------------------
 }
