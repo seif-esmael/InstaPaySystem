@@ -2,6 +2,15 @@ package instapaysystem;
 import java.util.Vector;
 public class dummyWalletDatabase extends dummyDatabase
 {
+    dummyWalletDatabase()
+    {
+        Account youssef = new walletAccount();
+        youssef.setUserName("youssef");
+        youssef.setPassword("youssefooo");
+        youssef.setMobileNumber("01222");
+        youssef.setBalance(2000);
+        accounts.add(youssef);
+    }
     public boolean checkExistance(String mobileNumber)    
     {
         for(Account a : accounts)

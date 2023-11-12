@@ -15,4 +15,8 @@ public class bankAccount extends Account
     {
         return bankAccountID;
     }
+    public void setBankAccountID(int ID)
+    {
+        bankAccountID = ID;
+    }
 }

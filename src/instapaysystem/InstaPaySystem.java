@@ -15,16 +15,11 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
     public void run()
     {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\t\t\t\t________________________________");
-        System.out.println("\t\t\t\t---Welcome To InstaPay System---");
-        System.out.println("\t\t\t\t________________________________");
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t________________________________");
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t|  Welcome To InstaPay System  |");
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t________________________________");
         while(true)
         {
-            boolean exit = false;
-            if(exit)
-            {
-                break;
-            }
             if(loggedIn)
             {
                 while(true)
@@ -34,8 +29,10 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
                     System.out.println("3- Pay bills");
                     System.out.println("4- deposit");
                     System.out.println("5- Withdraw");
-                    System.out.println("6- Logout");
-                    System.out.println("7- Exit");
+                    System.out.println("6- Inquire about my IDs");
+                    System.out.println("7- Logout");
+                    System.out.println("8- Exit");
+                    System.out.print("Your choice: ");
                     String choice = scanner.next();
                     if(choice.equals("1"))
                     {
@@ -47,6 +44,7 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
                                 System.out.println("2- Transfer to wallet");
                                 System.out.println("3- Transfer to InstaPay account");
                                 System.out.println("4- Back");
+                                System.out.print("Your choice: ");
                                 String c = scanner.next();
                                 if(c.equals("1"))
                                 {
@@ -107,6 +105,7 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
                                 System.out.println("1- Transfer to wallet");
                                 System.out.println("2- Transfer to InstaPay account");
                                 System.out.println("3- Back");
+                                System.out.print("Your choice: ");
                                 String c = scanner.next();
                                 if(c.equals("1"))
                                 {
@@ -162,6 +161,7 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
                             double price = currentUser.printBills();
                             System.out.println("1- Pay");
                             System.out.println("2- Back");
+                            System.out.print("Your choice: ");
                             String c = scanner.next();
                             if(c.equals("1"))
                             {
@@ -179,22 +179,47 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
                     }
                     else if(choice.equals("4"))
                     {
-                        
+                        System.out.print("Enter amount you want to deposit: ");
+                        int amount = scanner.nextInt();
+                        if(deposit(amount))
+                        {
+                            System.out.println("Deposit successfully done!");
+                        }
+                        else
+                        {
+                            System.out.println("Deposit couldn't be done!");
+                        }
                     }
                     else if(choice.equals("5"))
                     {
-
+                        System.out.print("Enter amount you want to withdraw: ");
+                        int amount = scanner.nextInt();
+                        if(withdraw(amount))
+                        {
+                            System.out.println("Withdraw successfully done!");
+                        }
+                        else
+                        {
+                            System.out.println("Withdraw couldn't be done!");
+                        }
                     }
                     else if(choice.equals("6"))
+                    {
+                        System.out.println("Your InstaPay ID: " + currentUser.getInstaID());
+                        if(currentUser.type.equals(userType.instaPayBankUser))
+                        {
+                            System.out.println("Your Bank ID: " + ((instaPayBankUser) currentUser).getBankAccountID());
+                        }
+                    }
+                    else if(choice.equals("7"))
                     {
                         loggedIn = false;
                         currentUser = null;
                         break;
                     }
-                    else if(choice.equals("7"))
+                    else if(choice.equals("8"))
                     {
-                        exit = true;
-                        break;
+                        System.exit(0);
                     }
                     else
                     {
@@ -213,13 +238,14 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
                     System.out.println("1- Register");
                     System.out.println("2- Sign In");
                     System.out.println("3- Exit");
+                    System.out.print("Your choice: ");
                     String choice = scanner.next();
                     if(choice.equals("1"))
                     {
                         User u = register();
                         if(u != null)
                         {
-                            addUser(register());
+                            addUser(u);
                         }
                         break;
                     }
@@ -228,14 +254,13 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
                         User u = signIn();
                         if(u != null)
                         {
-                            currentUser = signIn();
+                            currentUser = u;
                         }
                         break;
                     }
                     else if(choice.equals("3"))
                     {
-                        exit = true;
-                        break;
+                        System.exit(0);
                     }
                     else
                     {
@@ -249,7 +274,9 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
     public User register()
     {
         Scanner data = new Scanner(System.in);
-        System.out.println("1-)Register using your bank account\n2-)Register using your eWallet\n");
+        System.out.println();
+        System.out.println("1- Register using your bank account\n2- Register using your eWallet\n");
+        System.out.print("Your choice: ");
         String choice = data.next();
         if (choice.equals("1"))
         {
@@ -355,13 +382,13 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
             System.out.println("Your balance is not enough!");
             return false;
         }
-        if(getUser(ID).type.equals(userType.instaPayBankUser))
+        if(getUser(ID,"insta").type.equals(userType.instaPayBankUser))
         {
             database.bankDatabase.addCredit(ID,amount);
         }
         else
         {
-            database.walletDatabase.addCredit(getUser(ID).mobileNumber,amount);
+            database.walletDatabase.addCredit(getUser(ID,"insta").mobileNumber,amount);
         }
         if(currentUser.type.equals(userType.instaPayBankUser))
         {
@@ -373,7 +400,6 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
         }
         database.instaDatabase.addCredit(ID,amount);
         database.instaDatabase.removeCredit(currentUser.getInstaID(),amount);
-        currentUser.updateBalance(-amount);
         return true;
     }
     
@@ -417,22 +443,36 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
         return null;
     }
     
-    public User getUser(int ID) {
-        for(User u : database.instaDatabase.getUsers())
+    public User getUser(int ID, String which)
+    {
+        if(which.equals("insta"))
         {
-            if(u.instaPayID == ID)
+            for(User u : database.instaDatabase.getUsers())
             {
-                return u;
-            }            
+                if(u.instaPayID == ID)
+                {
+                    return u;
+                }
+            }
+            return null;
         }
-        return null;
+        else
+        {
+            for(User u : database.instaDatabase.getUsers())
+            {
+                if(((instaPayBankUser) u).getBankAccountID() == ID)
+                {
+                    return u;
+                }
+            }
+            return null;
+        }
     }
     
     @Override
     public boolean deposit(double amount)
     {
         database.instaDatabase.addCredit(currentUser.instaPayID, amount);
-        currentUser.updateBalance(amount);
         if(currentUser.type.equals(userType.instaPayBankUser))
         {
             database.bankDatabase.addCredit(((instaPayBankUser)currentUser).getBankAccountID(), amount);            
@@ -451,7 +491,6 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
             return false;
         }
         database.instaDatabase.removeCredit(currentUser.instaPayID, amount);
-        currentUser.updateBalance(-amount);
         if(currentUser.type.equals(userType.instaPayBankUser))
         {
             database.bankDatabase.removeCredit(((instaPayBankUser)currentUser).getBankAccountID(), amount);            
@@ -496,7 +535,6 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
             database.instaDatabase.addCredit(getUser(mobilenumber).getInstaID(),amount);
         }
         database.instaDatabase.removeCredit(currentUser.getInstaID(),amount);
-        currentUser.updateBalance(-amount);
         return true;
     }
     
@@ -540,9 +578,8 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
         }
         database.bankDatabase.addCredit(ID,amount);
         database.bankDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
-        database.instaDatabase.addCredit(ID,amount);
-        database.instaDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
-        currentUser.updateBalance(-amount);
+        database.instaDatabase.addCredit(getUser(ID,"bank").getInstaID(),amount);
+        database.instaDatabase.removeCredit(currentUser.getInstaID(),amount);
         return true;
     }
     

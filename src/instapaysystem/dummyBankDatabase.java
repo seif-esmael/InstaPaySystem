@@ -2,6 +2,23 @@ package instapaysystem;
 import java.util.Vector;
 public class dummyBankDatabase extends dummyDatabase
 {
+    dummyBankDatabase()
+    {
+        Account acc = new bankAccount();
+        acc.setUserName("kero");
+        acc.setPassword("kerooo");
+        acc.setMobileNumber("012");
+        acc.setBalance(1000);
+        ((bankAccount) acc).setBankAccountID(1);
+        accounts.add(acc);
+        Account seif = new bankAccount();
+        seif.setUserName("seif");
+        seif.setPassword("seifooo");
+        seif.setMobileNumber("0122");
+        ((bankAccount) seif).setBankAccountID(2);
+        seif.setBalance(1000);
+        accounts.add(seif);
+    }
     public boolean checkExistance(int id)
     {
         for(Account a : accounts)
@@ -21,11 +38,11 @@ public class dummyBankDatabase extends dummyDatabase
             {
                 if(((bankAccount) a).getBalance() < amount)
                 {
-                    return true;
+                    return false;
                 }
                 else
                 {
-                    return false;
+                    return true;
                 }
             }
         }

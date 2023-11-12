@@ -30,7 +30,6 @@ public class instaPayBankUser extends User
     }
     public boolean pay(double amount)
     {
-        bills.clear();
         if(!database.instaDatabase.checkBalance(instaPayID,amount))
         {
             System.out.println("Your balance is not enough!");
@@ -38,23 +37,8 @@ public class instaPayBankUser extends User
         }
         balance -= amount;
         database.bankDatabase.removeCredit(bankAccountID,amount);
+        bills.clear();
         return true;
-    }
-    public boolean withdraw(double amount)
-    {
-        if(!database.bankDatabase.checkBalance(bankAccountID,amount))
-        {
-            System.out.println("Your balance is not enough!");
-            return false;
-        }
-        balance -= amount;
-        database.bankDatabase.removeCredit(bankAccountID,amount);
-        return true;
-    }
-    public void deposit(double amount)
-    {
-        super.deposit(amount);
-        database.bankDatabase.addCredit(bankAccountID,amount);
     }
     public int getBankAccountID()
     {
