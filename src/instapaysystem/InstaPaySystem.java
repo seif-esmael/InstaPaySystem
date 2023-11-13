@@ -326,7 +326,7 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
         {
             String bank_email, bank_password, bank_phone_number, email, password;
 
-            System.out.print("Enter the Bank's Email: ");
+            System.out.print("Enter the Bank's Username: ");
             bank_email = data.next();
             System.out.println();
             //-----------------------------------------------------
@@ -597,9 +597,13 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
             database.walletDatabase.removeCredit(currentUser.mobileNumber,amount);
         }
         database.walletDatabase.addCredit(mobilenumber,amount);
-        if(database.instaDatabase.checkExistance(getUser(mobilenumber).getInstaID()))
+        try
         {
-            database.instaDatabase.addCredit(getUser(mobilenumber).getInstaID(),amount);
+            database.instaDatabase.addCredit(getUser(mobilenumber).getInstaID(), amount);
+        }
+        catch(Exception e)
+        {
+
         }
         database.instaDatabase.removeCredit(currentUser.getInstaID(),amount);
         return true;
@@ -647,8 +651,18 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
         }
         database.bankDatabase.addCredit(ID,amount);
         database.bankDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
-        database.instaDatabase.addCredit(getUser(ID,"bank").getInstaID(),amount);
+
+        try
+        {
+            database.instaDatabase.addCredit(getUser(ID,"bank").getInstaID(),amount);
+        }
+        catch(Exception e)
+        {
+
+        }
         database.instaDatabase.removeCredit(currentUser.getInstaID(),amount);
+
+
         return true;
     }
     
