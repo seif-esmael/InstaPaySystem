@@ -339,16 +339,36 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
             System.out.println();
             if(search(bank_email,bank_password,bank_phone_number))
             {
+                if(getUser(((bankAccount)getAcc(bank_email,bank_password,bank_phone_number)).getBankAccountID(),"bank") != null)
+                {
+                    System.out.println();
+                    System.out.println("You are already registered!");
+                    System.out.println();
+                    return getUser(((bankAccount)getAcc(bank_email,bank_password,bank_phone_number)).getBankAccountID(),"bank");
+                }
                 System.out.println("Welcome!");
                 System.out.println("Please enter enter your new account data!");
-                System.out.println();
-                System.out.print("Enter Email: ");
-                email = data.next();
-                System.out.println();
-                //-----------------------------------------------------
-                System.out.print("Enter Password: ");
-                password = data.next();
-                System.out.println();
+                while(true)
+                {
+                    System.out.println();
+                    System.out.print("Enter Email: ");
+                    email = data.next();
+                    System.out.println();
+                    //-----------------------------------------------------
+                    System.out.print("Enter Password: ");
+                    password = data.next();
+                    System.out.println();
+                    if(search(email,password))
+                    {
+                        System.out.println();
+                        System.out.println("Email is already taken!");
+                        System.out.println();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 double bank_balance = (getAcc(bank_email,bank_password,bank_phone_number)).getBalance();
                 int bank_ID = ((bankAccount)getAcc(bank_email,bank_password,bank_phone_number)).getBankAccountID();
 
@@ -371,18 +391,38 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
             System.out.print("Enter your eWallet Phone number: ");
             eWallet_phone_number = data.next();
             System.out.println();
+            if(getUser(eWallet_phone_number) != null)
+            {
+                System.out.println();
+                System.out.println("You already registered!");
+                System.out.println();
+                return getUser(eWallet_phone_number);
+            }
             if(search(eWallet_phone_number))
             {
                 System.out.println("Welcome!");
                 System.out.println("Please enter enter your new account data!");
-                System.out.println();
-                System.out.print("Enter Email: ");
-                email = data.next();
-                System.out.println();
-                //-----------------------------------------------------
-                System.out.print("Enter Password: ");
-                password = data.next();
-                System.out.println();
+                while(true)
+                {
+                    System.out.println();
+                    System.out.print("Enter Email: ");
+                    email = data.next();
+                    System.out.println();
+                    //-----------------------------------------------------
+                    System.out.print("Enter Password: ");
+                    password = data.next();
+                    System.out.println();
+                    if(search(email,password))
+                    {
+                        System.out.println();
+                        System.out.println("Email is already taken!");
+                        System.out.println();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 double ewallet_balance = (getAcc(eWallet_phone_number)).getBalance();
                 instaPayWalletUser myuser = new instaPayWalletUser(email,password,eWallet_phone_number,idsforusers++,ewallet_balance);
                 System.out.println("Your new account has been created!");
