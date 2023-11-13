@@ -20,6 +20,11 @@ public class instaPayWalletUser extends User
             System.out.println("Your balance is not enough!");
             return false;
         }
+        if(bills.size() == 0)
+        {
+            System.out.println("There is no bills!");
+            return true;
+        }
         balance -= amount;
         database.walletDatabase.removeCredit(mobileNumber,amount);
         bills.clear();
