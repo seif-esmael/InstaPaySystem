@@ -16,7 +16,7 @@ public class dummyBankDatabase extends dummyDatabase
         Account seif = new bankAccount();
         seif.setUserName("seif");
         seif.setPassword("seifmohamed");
-        seif.setMobileNumber("01223456789");
+        seif.setMobileNumber("01000946346");
         ((bankAccount) seif).setBankAccountID(129);
         seif.setBalance(1000);
         accounts.add(seif);

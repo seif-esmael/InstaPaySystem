@@ -1,12 +1,13 @@
 package instapaysystem;
 
 import java.lang.reflect.Array;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
+public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI , OTP
 {
     private User currentUser;
     private int idsforusers = 100;
@@ -325,7 +326,6 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
         if (choice.equals("1"))
         {
             String bank_email, bank_password, bank_phone_number, email, password;
-
             System.out.print("Enter the Bank's Username: ");
             bank_email = data.next();
             System.out.println();
@@ -336,7 +336,19 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
             //-----------------------------------------------------
             System.out.print("Enter the Bank's Phone number: ");
             bank_phone_number = data.next();
-            System.out.println();
+            System.out.println();            
+            while(true)
+            {
+                int otp = sendOTP();
+                System.out.print("Enter the OTP sent to your registered phone number: ");
+                int inputOTP = data.nextInt();
+                if (confirm(otp,inputOTP)) {
+                    System.out.println("OTP confirmed successfully!");
+                    break;
+                } else {
+                    System.out.println("OTP confirmation failed, Try again");
+                }
+            }
             if(search(bank_email,bank_password,bank_phone_number))
             {
                 if(getUser(((bankAccount)getAcc(bank_email,bank_password,bank_phone_number)).getBankAccountID(),"bank") != null)
@@ -391,6 +403,18 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
             System.out.print("Enter your eWallet Phone number: ");
             eWallet_phone_number = data.next();
             System.out.println();
+            while(true)
+            {
+                int otp = sendOTP();
+                System.out.print("Enter the OTP sent to your registered phone number: ");
+                int inputOTP = data.nextInt();
+                if (confirm(otp,inputOTP)) {
+                    System.out.println("OTP confirmed successfully!");
+                    break;
+                } else {
+                    System.out.println("OTP confirmation failed, Try again");
+                }
+            }
             if(getUser(eWallet_phone_number) != null)
             {
                 System.out.println();
@@ -730,5 +754,22 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI
         }
         return null;
     }
-    //------------------------------------------------------------------------------------------------------------------         
+    //------------------------------------------------------------------------------------------------------------------
+    //This Section for OTP
+    @Override
+    public int sendOTP() {
+        Random random = new Random();
+        int otp = 1000 + random.nextInt(9000);        
+        System.out.println("OTP sent to the user: " + otp);                
+        return otp;
+    }
+
+    @Override
+    public boolean confirm(int usercode, int code) {
+        if (usercode == code) {
+            return true;            
+        }
+        return false;
+    }
+    //------------------------------------------------------------------------------------------------------------------
 }
