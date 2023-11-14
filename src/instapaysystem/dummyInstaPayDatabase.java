@@ -44,7 +44,7 @@ public class dummyInstaPayDatabase
         {
             if(u.getInstaID() == id)
             {
-                u.updateBalance(amount);
+                u.setBalance(u.getBalance() + amount);
                 break;
             }
         }
@@ -55,7 +55,7 @@ public class dummyInstaPayDatabase
         {
             if(u.getInstaID() == id)
             {
-                u.updateBalance(-amount);
+                u.setBalance(u.getBalance() - amount);
                 break;
             }
         }

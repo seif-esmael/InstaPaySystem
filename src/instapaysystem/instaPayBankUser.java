@@ -13,12 +13,11 @@ public class instaPayBankUser extends User
         this.mobileNumber = mobilenumber;
         this.type = userType.instaPayBankUser;
         this.instaPayID=instapayID;
-        this.bills.add(new waterBill());
-        this.bills.add(new gasBill());
-        this.bills.add(new electricityBill());
+        this.bills.add(new bill(billType.waterBill));
+        this.bills.add(new bill(billType.gasBill));
+        this.bills.add(new bill(billType.electricityBill));
         this.bankAccountID = bankID;
         this.balance = balance;
-
     }
     public boolean pay(double amount)
     {

@@ -8,9 +8,9 @@ public class instaPayWalletUser extends User
         this.mobileNumber = mobilenumber;
         this.type = userType.instaPayWalletUser;
         this.instaPayID=instapayID;
-        this.bills.add(new waterBill());
-        this.bills.add(new gasBill());
-        this.bills.add(new electricityBill());
+        this.bills.add(new bill(billType.waterBill));
+        this.bills.add(new bill(billType.gasBill));
+        this.bills.add(new bill(billType.electricityBill));
         this.balance = balance;
     }
     public boolean pay(double amount)

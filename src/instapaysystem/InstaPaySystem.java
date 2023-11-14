@@ -7,7 +7,7 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI , OTP
+public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI , OTP , siginIn
 {
     private User currentUser;
     private int idsforusers = 100;
@@ -183,15 +183,50 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI , OTP
                         {
                             System.out.println();
                             System.out.println("Your bills are: ");
-                            double price = currentUser.printBills();
+                            currentUser.printBills();
                             System.out.println("1- Pay");
                             System.out.println("2- Back");
                             System.out.print("Your choice: ");
                             String c = scanner.next();
                             System.out.println();
+                            Vector <billsPayment> spare = currentUser.getBills();
                             if(c.equals("1"))
                             {
-                                currentUser.pay(price);
+                                if(spare.isEmpty())
+                                {
+                                    System.out.println("You have no bills to pay!");
+                                }
+                                else
+                                {
+                                    System.out.print("Enter the number of bill you want to pay: ");
+                                    int ccc = scanner.nextInt();
+                                    if(ccc > spare.size() || ccc <= 0)
+                                    {
+                                        System.out.println("Invalid index!");
+                                    }
+                                    else if(((bill)spare.elementAt(ccc-1)).getAmount() > currentUser.getBalance())
+                                    {
+                                        System.out.println("Your balance is not enough!");
+                                    }
+                                    else if(((bill)spare.elementAt(ccc-1)).getStatus())
+                                    {
+                                        System.out.println("You already paid it!");
+                                    }
+                                    else
+                                    {
+                                        database.instaDatabase.removeCredit(currentUser.getInstaID(),((bill)spare.elementAt(ccc-1)).getAmount());
+                                        if(currentUser.getType().equals(userType.instaPayBankUser))
+                                        {
+                                            database.bankDatabase.removeCredit(((instaPayBankUser)currentUser).getBankAccountID(),((bill)spare.elementAt(ccc-1)).getAmount());
+                                        }
+                                        else
+                                        {
+                                            database.walletDatabase.removeCredit(currentUser.mobileNumber,((bill)spare.elementAt(ccc-1)).getAmount());
+                                        }
+                                        spare.elementAt(ccc-1).pay();
+                                    }
+                                }
+                                currentUser.setBills(spare);
                             }
                             else if(c.equals("2"))
                             {
@@ -336,7 +371,7 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI , OTP
             //-----------------------------------------------------
             System.out.print("Enter the Bank's Phone number: ");
             bank_phone_number = data.next();
-            System.out.println();            
+            System.out.println();
             while(true)
             {
                 int otp = sendOTP();

@@ -2,14 +2,14 @@ package instapaysystem;
 
 import java.util.Vector;
 
-public abstract class User implements billsPayment
+public abstract class User
 {
     protected String userName;
     protected String password;
     protected String mobileNumber;
     protected int instaPayID;
     protected double balance;
-    protected Vector<bill> bills = new Vector();
+    protected Vector<billsPayment> bills = new Vector();
     protected userType type;
     //-------------------------------------------------        
     public double getBalance()
@@ -22,21 +22,35 @@ public abstract class User implements billsPayment
         return instaPayID;
     }
     //---------------------------------------------------
-    public double printBills()
+    public void printBills()
     {
         int cnt = 1;
-        int totalPrice = 0;
-        for(bill i : bills)
+        for(billsPayment i : bills)
         {
-            System.out.println(cnt + "- " + i.getType() + " price: " + i.getAmount());
-            totalPrice += i.getAmount();
+            System.out.print(cnt + "- " + ((bill) i).getType() + " price: " + ((bill) i).getAmount());
             cnt++;
+            if(((bill) i).getStatus())
+            {
+                System.out.print(" paid");
+            }
+            System.out.println();
         }
-        System.out.println("Total price: " + totalPrice);
-        return totalPrice;
     }
-    public void updateBalance(double amount)
+    public void setBalance(double balance)
     {
-        balance += amount;
+        this.balance = balance;
+    }
+
+    public Vector<billsPayment> getBills()
+    {
+        return bills;
+    }
+    public void setBills(Vector<billsPayment> bills)
+    {
+        this.bills = bills;
+    }
+    public userType getType()
+    {
+        return type;
     }
 }
