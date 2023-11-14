@@ -7,7 +7,11 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI , OTP , siginIn
+
+import static instapaysystem.BankAPI.getAcc;
+import static instapaysystem.InstaPayAPI.*;
+
+public class InstaPaySystem implements  siginIn
 {
     private User currentUser;
     private int idsforusers = 100;
@@ -55,16 +59,16 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI , OTP ,
                                     System.out.print("Enter amount you want to transfer: ");
                                     int amount = scanner.nextInt();
                                     System.out.println();
-                                    if(transferToBank(id,amount))
-                                    {
-                                        System.out.println("Transfer was successfully done!");
-                                        System.out.println();
-                                    }
-                                    else
-                                    {
-                                        System.out.println("Transfer couldn't be completed!");
-                                        System.out.println();
-                                    }
+//                                    if(transferToBank(id,amount))
+//                                    {
+//                                        System.out.println("Transfer was successfully done!");
+//                                        System.out.println();
+//                                    }
+//                                    else
+//                                    {
+//                                        System.out.println("Transfer couldn't be completed!");
+//                                        System.out.println();
+//                                    }
                                 }
                                 else if(c.equals("2"))
                                 {
@@ -74,16 +78,16 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI , OTP ,
                                     System.out.print("Enter amount you want to transfer: ");
                                     int amount = scanner.nextInt();
                                     System.out.println();
-                                    if(transferToWallet(mobileNumber,amount))
-                                    {
-                                        System.out.println("Transfer was successfully done!");
-                                        System.out.println();
-                                    }
-                                    else
-                                    {
-                                        System.out.println("Transfer couldn't be completed!");
-                                        System.out.println();
-                                    }
+//                                    if(transferToWallet(mobileNumber,amount))
+//                                    {
+//                                        System.out.println("Transfer was successfully done!");
+//                                        System.out.println();
+//                                    }
+//                                    else
+//                                    {
+//                                        System.out.println("Transfer couldn't be completed!");
+//                                        System.out.println();
+//                                    }
                                 }
                                 else if(c.equals("3"))
                                 {
@@ -93,16 +97,16 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI , OTP ,
                                     System.out.print("Enter amount you want to transfer: ");
                                     int amount = scanner.nextInt();
                                     System.out.println();
-                                    if(transfertoInstaPay(id,amount))
-                                    {
-                                        System.out.println("Transfer was successfully done!");
-                                        System.out.println();
-                                    }
-                                    else
-                                    {
-                                        System.out.println("Transfer couldn't be completed!");
-                                        System.out.println();
-                                    }
+//                                    if(transfertoInstaPay(id,amount))
+//                                    {
+//                                        System.out.println("Transfer was successfully done!");
+//                                        System.out.println();
+//                                    }
+//                                    else
+//                                    {
+//                                        System.out.println("Transfer couldn't be completed!");
+//                                        System.out.println();
+//                                    }
                                 }
                                 else if(c.equals("4"))
                                 {
@@ -128,16 +132,16 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI , OTP ,
                                     System.out.print("Enter amount you want to transfer: ");
                                     int amount = scanner.nextInt();
                                     System.out.println();
-                                    if(transferToWallet(mobileNumber,amount))
-                                    {
-                                        System.out.println("Transfer was successfully done!");
-                                        System.out.println();
-                                    }
-                                    else
-                                    {
-                                        System.out.println("Transfer couldn't be completed!");
-                                        System.out.println();
-                                    }
+//                                    if(transferToWallet(mobileNumber,amount))
+//                                    {
+//                                        System.out.println("Transfer was successfully done!");
+//                                        System.out.println();
+//                                    }
+//                                    else
+//                                    {
+//                                        System.out.println("Transfer couldn't be completed!");
+//                                        System.out.println();
+//                                    }
                                 }
                                 else if(c.equals("2"))
                                 {
@@ -147,16 +151,16 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI , OTP ,
                                     System.out.print("Enter amount you want to transfer: ");
                                     int amount = scanner.nextInt();
                                     System.out.println();
-                                    if(transfertoInstaPay(id,amount))
-                                    {
-                                        System.out.println("Transfer was successfully done!");
-                                        System.out.println();
-                                    }
-                                    else
-                                    {
-                                        System.out.println("Transfer couldn't be completed!");
-                                        System.out.println();
-                                    }
+//                                    if(transfertoInstaPay(id,amount))
+//                                    {
+//                                        System.out.println("Transfer was successfully done!");
+//                                        System.out.println();
+//                                    }
+//                                    else
+//                                    {
+//                                        System.out.println("Transfer couldn't be completed!");
+//                                        System.out.println();
+//                                    }
                                 }
                                 else if(c.equals("3"))
                                 {
@@ -245,7 +249,7 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI , OTP ,
                         System.out.print("Enter amount you want to deposit: ");
                         int amount = scanner.nextInt();
                         System.out.println();
-                        if(deposit(amount))
+                        if(deposit(amount,currentUser))
                         {
                             System.out.println("Deposit successfully done!");
                             System.out.println();
@@ -262,7 +266,7 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI , OTP ,
                         System.out.print("Enter amount you want to withdraw: ");
                         int amount = scanner.nextInt();
                         System.out.println();
-                        if(withdraw(amount))
+                        if(withdraw(amount,currentUser))
                         {
                             System.out.println("Withdraw successfully done!");
                             System.out.println();
@@ -321,12 +325,28 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI , OTP ,
                     System.out.println();
                     if(choice.equals("1"))
                     {
-                        User u = register();
-                        if(u != null)
+                        Scanner data = new Scanner(System.in);
+                        System.out.println();
+                        System.out.println("1- Register using your bank account\n2- Register using your eWallet\n");
+                        System.out.print("Your choice: ");
+                        String choice2 = data.next();
+                        if (choice2.equals("1"))
                         {
-                            addUser(u);
+                            RegisterContext context = new RegisterContext(new bankRegister());
+                            User myuser = context.register.registeration(idsforusers++);
+                            if(myuser!=null)
+                            {
+                                context.addUser(myuser);
+                            }
                         }
-                        break;
+                        else if(choice2.equals("2")) {
+                            RegisterContext context = new RegisterContext(new walletRegister());
+                            User myuser = context.register.registeration(idsforusers++);
+                            if(myuser!=null)
+                            {
+                                context.addUser(myuser);
+                            }
+                        }
                     }
                     else if(choice.equals("2"))
                     {
@@ -351,156 +371,6 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI , OTP ,
         }
     }
     //------------------------------------------------------------------------------------------------------------------
-    public User register()
-    {
-        Scanner data = new Scanner(System.in);
-        System.out.println();
-        System.out.println("1- Register using your bank account\n2- Register using your eWallet\n");
-        System.out.print("Your choice: ");
-        String choice = data.next();
-        if (choice.equals("1"))
-        {
-            String bank_email, bank_password, bank_phone_number, email, password;
-            System.out.print("Enter the Bank's Username: ");
-            bank_email = data.next();
-            System.out.println();
-            //-----------------------------------------------------
-            System.out.print("Enter the Bank's Password: ");
-            bank_password = data.next();
-            System.out.println();
-            //-----------------------------------------------------
-            System.out.print("Enter the Bank's Phone number: ");
-            bank_phone_number = data.next();
-            System.out.println();
-            while(true)
-            {
-                int otp = sendOTP();
-                System.out.print("Enter the OTP sent to your registered phone number: ");
-                int inputOTP = data.nextInt();
-                if (confirm(otp,inputOTP)) {
-                    System.out.println("OTP confirmed successfully!");
-                    break;
-                } else {
-                    System.out.println("OTP confirmation failed, Try again");
-                }
-            }
-            if(search(bank_email,bank_password,bank_phone_number))
-            {
-                if(getUser(((bankAccount)getAcc(bank_email,bank_password,bank_phone_number)).getBankAccountID(),"bank") != null)
-                {
-                    System.out.println();
-                    System.out.println("You are already registered!");
-                    System.out.println();
-                    return getUser(((bankAccount)getAcc(bank_email,bank_password,bank_phone_number)).getBankAccountID(),"bank");
-                }
-                System.out.println("Welcome!");
-                System.out.println("Please enter enter your new account data!");
-                while(true)
-                {
-                    System.out.println();
-                    System.out.print("Enter Email: ");
-                    email = data.next();
-                    System.out.println();
-                    //-----------------------------------------------------
-                    System.out.print("Enter Password: ");
-                    password = data.next();
-                    System.out.println();
-                    if(search(email,password))
-                    {
-                        System.out.println();
-                        System.out.println("Email is already taken!");
-                        System.out.println();
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                double bank_balance = (getAcc(bank_email,bank_password,bank_phone_number)).getBalance();
-                int bank_ID = ((bankAccount)getAcc(bank_email,bank_password,bank_phone_number)).getBankAccountID();
-
-                instaPayBankUser myuser = new instaPayBankUser(email,password,bank_phone_number,idsforusers++,bank_balance,bank_ID);
-                System.out.println("Your new account has been created!");
-                System.out.println();
-                return myuser;
-            }
-            else
-            {
-                System.out.println("User not found in bank!");
-                System.out.println();
-            }
-
-        }
-        else if(choice.equals("2"))
-        {
-            System.out.println();
-            String eWallet_phone_number, email, password;
-            System.out.print("Enter your eWallet Phone number: ");
-            eWallet_phone_number = data.next();
-            System.out.println();
-            while(true)
-            {
-                int otp = sendOTP();
-                System.out.print("Enter the OTP sent to your registered phone number: ");
-                int inputOTP = data.nextInt();
-                if (confirm(otp,inputOTP)) {
-                    System.out.println("OTP confirmed successfully!");
-                    break;
-                } else {
-                    System.out.println("OTP confirmation failed, Try again");
-                }
-            }
-            if(getUser(eWallet_phone_number) != null)
-            {
-                System.out.println();
-                System.out.println("You already registered!");
-                System.out.println();
-                return getUser(eWallet_phone_number);
-            }
-            if(search(eWallet_phone_number))
-            {
-                System.out.println("Welcome!");
-                System.out.println("Please enter enter your new account data!");
-                while(true)
-                {
-                    System.out.println();
-                    System.out.print("Enter Email: ");
-                    email = data.next();
-                    System.out.println();
-                    //-----------------------------------------------------
-                    System.out.print("Enter Password: ");
-                    password = data.next();
-                    System.out.println();
-                    if(search(email,password))
-                    {
-                        System.out.println();
-                        System.out.println("Email is already taken!");
-                        System.out.println();
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                double ewallet_balance = (getAcc(eWallet_phone_number)).getBalance();
-                instaPayWalletUser myuser = new instaPayWalletUser(email,password,eWallet_phone_number,idsforusers++,ewallet_balance);
-                System.out.println("Your new account has been created!");
-                System.out.println();
-                return myuser;
-            }
-            else
-            {
-                System.out.println("User not found in eWallet!");
-                System.out.println();
-            }
-        }
-        else
-        {
-            System.out.println("Invalid Choice!");
-            System.out.println();
-        }
-        return null;
-    }
     //------------------------------------------------------------------------------------------------------------------
     public User signIn()
     {
@@ -530,281 +400,124 @@ public class InstaPaySystem implements WalletAPI , InstaPayAPI , BankAPI , OTP ,
     }
     //------------------------------------------------------------------------------------------------------------------        
     // **This Section for InstaPayAPI**    
-    @Override
-    public boolean transfertoInstaPay(int ID, double amount)
-    {
-        if(!database.instaDatabase.checkExistance(ID))
-        {
-            System.out.println("Couldn't find the user you want to transfer to!");
-            System.out.println();
-            return false;
-        }
-        if(!database.instaDatabase.checkBalance(currentUser.getInstaID(),amount))
-        {
-            System.out.println("Your balance is not enough!");
-            System.out.println();
-            return false;
-        }
-        if(getUser(ID,"insta").type.equals(userType.instaPayBankUser))
-        {
-            database.bankDatabase.addCredit(ID,amount);
-        }
-        else
-        {
-            database.walletDatabase.addCredit(getUser(ID,"insta").mobileNumber,amount);
-        }
-        if(currentUser.type.equals(userType.instaPayBankUser))
-        {
-            database.bankDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
-        }
-        else
-        {
-            database.walletDatabase.removeCredit(currentUser.mobileNumber,amount);
-        }
-        database.instaDatabase.addCredit(ID,amount);
-        database.instaDatabase.removeCredit(currentUser.getInstaID(),amount);
-        return true;
-    }
+//    @Override
+//    public boolean transfertoInstaPay(int ID, double amount)
+//    {
+//        if(!database.instaDatabase.checkExistance(ID))
+//        {
+//            System.out.println("Couldn't find the user you want to transfer to!");
+//            System.out.println();
+//            return false;
+//        }
+//        if(!database.instaDatabase.checkBalance(currentUser.getInstaID(),amount))
+//        {
+//            System.out.println("Your balance is not enough!");
+//            System.out.println();
+//            return false;
+//        }
+//        if(getUser(ID,"insta").type.equals(userType.instaPayBankUser))
+//        {
+//            database.bankDatabase.addCredit(ID,amount);
+//        }
+//        else
+//        {
+//            database.walletDatabase.addCredit(getUser(ID,"insta").mobileNumber,amount);
+//        }
+//        if(currentUser.type.equals(userType.instaPayBankUser))
+//        {
+//            database.bankDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
+//        }
+//        else
+//        {
+//            database.walletDatabase.removeCredit(currentUser.mobileNumber,amount);
+//        }
+//        database.instaDatabase.addCredit(ID,amount);
+//        database.instaDatabase.removeCredit(currentUser.getInstaID(),amount);
+//        return true;
+//    }
     
-    @Override
-    public void addUser(User u) {
-        database.instaDatabase.adduser(u);
-    }
-    
-    @Override
-    public boolean search(String userName, String password) {
-        for(User u : database.instaDatabase.getUsers())
-        {
-            if(u.userName.equals(userName) && u.password.equals(password))
-            {
-                return true;
-            }            
-        }
-        return false;
-    }
-    
-    @Override
-    public User getUser(String userName, String password) {
-        for(User u : database.instaDatabase.getUsers())
-        {
-            if(u.userName.equals(userName) && u.password.equals(password))
-            {
-                return u;
-            }            
-        }
-        return null;
-    }
-    
-    public User getUser(String mobileNumber) {
-        for(User u : database.instaDatabase.getUsers())
-        {
-            if(u.mobileNumber.equals(mobileNumber))
-            {
-                return u;
-            }            
-        }
-        return null;
-    }
-    
-    public User getUser(int ID, String which)
-    {
-        if(which.equals("insta"))
-        {
-            for(User u : database.instaDatabase.getUsers())
-            {
-                if(u.instaPayID == ID)
-                {
-                    return u;
-                }
-            }
-            return null;
-        }
-        else
-        {
-            for(User u : database.instaDatabase.getUsers())
-            {
-                if(((instaPayBankUser) u).getBankAccountID() == ID)
-                {
-                    return u;
-                }
-            }
-            return null;
-        }
-    }
-    
-    @Override
-    public boolean deposit(double amount)
-    {
-        database.instaDatabase.addCredit(currentUser.instaPayID, amount);
-        if(currentUser.type.equals(userType.instaPayBankUser))
-        {
-            database.bankDatabase.addCredit(((instaPayBankUser)currentUser).getBankAccountID(), amount);            
-        }
-        else
-        {
-            database.walletDatabase.addCredit(currentUser.mobileNumber, amount);
-        }
-        return true;
-    }
-    
-    public boolean withdraw(double amount)
-    {
-        if(!database.instaDatabase.checkBalance(currentUser.getInstaID(), amount))
-        {
-            return false;
-        }
-        database.instaDatabase.removeCredit(currentUser.instaPayID, amount);
-        if(currentUser.type.equals(userType.instaPayBankUser))
-        {
-            database.bankDatabase.removeCredit(((instaPayBankUser)currentUser).getBankAccountID(), amount);            
-        }
-        else
-        {
-            database.walletDatabase.removeCredit(currentUser.mobileNumber, amount);
-        }
-        return true;
-    }
+
     //------------------------------------------------------------------------------------------------------------------
     // **This Section for WalletAPI**
-    @Override
-    public boolean transferToWallet(String mobilenumber, double amount)
-    {
-        if(!database.walletDatabase.checkExistance(mobilenumber))
-        {
-            System.out.println("Couldn't find the user you want to transfer to!");
-            System.out.println();
-            return false;
-        }
-        if(currentUser.type.equals(userType.instaPayBankUser))
-        {
-            if(!database.bankDatabase.checkBalance(((instaPayBankUser) currentUser).getBankAccountID(),amount))
-            {
-                System.out.println("Your balance is not enough!");
-                System.out.println();
-                return false;
-            }
-            database.bankDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
-        }
-        else
-        {
-            if(!database.walletDatabase.checkBalance(currentUser.mobileNumber,amount))
-            {
-                System.out.println("Your balance is not enough!");
-                System.out.println();
-                return false;
-            }
-            database.walletDatabase.removeCredit(currentUser.mobileNumber,amount);
-        }
-        database.walletDatabase.addCredit(mobilenumber,amount);
-        try
-        {
-            database.instaDatabase.addCredit(getUser(mobilenumber).getInstaID(), amount);
-        }
-        catch(Exception e)
-        {
+//    @Override
+//    public boolean transferToWallet(String mobilenumber, double amount)
+//    {
+//        if(!database.walletDatabase.checkExistance(mobilenumber))
+//        {
+//            System.out.println("Couldn't find the user you want to transfer to!");
+//            System.out.println();
+//            return false;
+//        }
+//        if(currentUser.type.equals(userType.instaPayBankUser))
+//        {
+//            if(!database.bankDatabase.checkBalance(((instaPayBankUser) currentUser).getBankAccountID(),amount))
+//            {
+//                System.out.println("Your balance is not enough!");
+//                System.out.println();
+//                return false;
+//            }
+//            database.bankDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
+//        }
+//        else
+//        {
+//            if(!database.walletDatabase.checkBalance(currentUser.mobileNumber,amount))
+//            {
+//                System.out.println("Your balance is not enough!");
+//                System.out.println();
+//                return false;
+//            }
+//            database.walletDatabase.removeCredit(currentUser.mobileNumber,amount);
+//        }
+//        database.walletDatabase.addCredit(mobilenumber,amount);
+//        try
+//        {
+//            database.instaDatabase.addCredit(getUser(mobilenumber).getInstaID(), amount);
+//        }
+//        catch(Exception e)
+//        {
+//
+//        }
+//        database.instaDatabase.removeCredit(currentUser.getInstaID(),amount);
+//        return true;
+//    }
+    
 
-        }
-        database.instaDatabase.removeCredit(currentUser.getInstaID(),amount);
-        return true;
-    }
-    
-    @Override
-    public boolean search(String mobileNumber) {
-        for(Account a : database.walletDatabase.getAccounts())
-        {
-            if(((walletAccount) a).getMobileNumber().equals(mobileNumber))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    @Override
-    public Account getAcc(String mobileNumber) {
-        for(Account a : database.walletDatabase.getAccounts())
-        {
-            if(((walletAccount) a).getMobileNumber().equals(mobileNumber))            
-            {
-                return a;
-            }
-        }
-        return null;
-    }    
+
     //------------------------------------------------------------------------------------------------------------------  
     // **This Section for BankAPI** 
-    @Override
-    public boolean transferToBank(int ID, double amount)
-    {
-        if(!database.bankDatabase.checkExistance(ID))
-        {
-            System.out.println("Couldn't find the user you want to transfer to!");
-            System.out.println();
-            return false;
-        }
-        if(!database.bankDatabase.checkBalance(((instaPayBankUser)currentUser).getBankAccountID(),amount))
-        {
-            System.out.println("Your balance is not enough!");
-            System.out.println();
-            return false;
-        }
-        database.bankDatabase.addCredit(ID,amount);
-        database.bankDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
-
-        try
-        {
-            database.instaDatabase.addCredit(getUser(ID,"bank").getInstaID(),amount);
-        }
-        catch(Exception e)
-        {
-
-        }
-        database.instaDatabase.removeCredit(currentUser.getInstaID(),amount);
-
-
-        return true;
-    }
+//    @Override
+//    public boolean transferToBank(int ID, double amount)
+//    {
+//        if(!database.bankDatabase.checkExistance(ID))
+//        {
+//            System.out.println("Couldn't find the user you want to transfer to!");
+//            System.out.println();
+//            return false;
+//        }
+//        if(!database.bankDatabase.checkBalance(((instaPayBankUser)currentUser).getBankAccountID(),amount))
+//        {
+//            System.out.println("Your balance is not enough!");
+//            System.out.println();
+//            return false;
+//        }
+//        database.bankDatabase.addCredit(ID,amount);
+//        database.bankDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
+//
+//        try
+//        {
+//            database.instaDatabase.addCredit(getUser(ID,"bank").getInstaID(),amount);
+//        }
+//        catch(Exception e)
+//        {
+//
+//        }
+//        database.instaDatabase.removeCredit(currentUser.getInstaID(),amount);
+//
+//
+//        return true;
+//    }
     
-    @Override
-    public boolean search(String userName, String password, String mobileNumber) {
-        for(Account a : database.bankDatabase.getAccounts())
-        {
-            if(((bankAccount)a).getUserName().equals(userName) && ((bankAccount)a).getPassword().equals(password) && ((bankAccount)a).getMobileNumber().equals(mobileNumber))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    @Override
-    public Account getAcc(String userName, String password, String mobileNumber)
-    {
-        for(Account a : database.bankDatabase.getAccounts())
-        {
-            if(((bankAccount)a).getUserName().equals(userName) && ((bankAccount)a).getPassword().equals(password) && ((bankAccount)a).getMobileNumber().equals(mobileNumber))
-            {
-                return a;
-            }
-        }
-        return null;
-    }
-    //------------------------------------------------------------------------------------------------------------------
-    //This Section for OTP
-    @Override
-    public int sendOTP() {
-        Random random = new Random();
-        int otp = 1000 + random.nextInt(9000);        
-        System.out.println("OTP sent to the user: " + otp);                
-        return otp;
-    }
 
-    @Override
-    public boolean confirm(int usercode, int code) {
-        if (usercode == code) {
-            return true;            
-        }
-        return false;
-    }
-    //------------------------------------------------------------------------------------------------------------------
+    
+
 }

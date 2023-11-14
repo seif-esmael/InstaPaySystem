@@ -1,10 +1,18 @@
 package instapaysystem;
 
-public class bankRegister
+import java.util.Random;
+import java.util.Scanner;
+
+import static instapaysystem.BankAPI.getAcc;
+import static instapaysystem.InstaPayAPI.getUser;
+import static instapaysystem.InstaPayAPI.search;
+
+public class bankRegister implements OTP,Register
 {
-    public User registeration()
+    public User registeration(int idsforusers)
     {
         String bank_email, bank_password, bank_phone_number, email, password;
+        Scanner data = new Scanner(System.in);
         System.out.print("Enter the Bank's Username: ");
         bank_email = data.next();
         System.out.println();
@@ -28,7 +36,7 @@ public class bankRegister
                 System.out.println("OTP confirmation failed, Try again");
             }
         }
-        if(search(bank_email,bank_password,bank_phone_number))
+        if(BankAPI.search(bank_email,bank_password,bank_phone_number))
         {
             if(getUser(((bankAccount)getAcc(bank_email,bank_password,bank_phone_number)).getBankAccountID(),"bank") != null)
             {
@@ -63,7 +71,7 @@ public class bankRegister
             double bank_balance = (getAcc(bank_email,bank_password,bank_phone_number)).getBalance();
             int bank_ID = ((bankAccount)getAcc(bank_email,bank_password,bank_phone_number)).getBankAccountID();
 
-            instaPayBankUser myuser = new instaPayBankUser(email,password,bank_phone_number,idsforusers++,bank_balance,bank_ID);
+            instaPayBankUser myuser = new instaPayBankUser(email,password,bank_phone_number,idsforusers,bank_balance,bank_ID);
             System.out.println("Your new account has been created!");
             System.out.println();
             return myuser;
@@ -73,5 +81,22 @@ public class bankRegister
             System.out.println("User not found in bank!");
             System.out.println();
         }
+        return null;
+    }
+
+    @Override
+    public int sendOTP() {
+        Random random = new Random();
+        int otp = 1000 + random.nextInt(9000);
+        System.out.println("OTP sent to the user: " + otp);
+        return otp;
+    }
+
+    @Override
+    public boolean confirm(int usercode, int code) {
+        if (usercode == code) {
+            return true;
+        }
+        return false;
     }
 }

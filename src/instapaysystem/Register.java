@@ -2,5 +2,5 @@ package instapaysystem;
 
 public interface Register
 {
-    public User registeration();
+    public User registeration(int u);
 }
