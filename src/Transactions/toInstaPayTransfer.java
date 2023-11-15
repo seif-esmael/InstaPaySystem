@@ -4,64 +4,72 @@ import Database.Account;
 import Database.bankAccount;
 import Database.database;
 import Database.walletAccount;
-import User.instaPayWalletUser;
 import User.*;
 
-import static API.InstaPayAPI.getUser;
+import static API.DatabaseFunctions.getUser;
 
-public class toInstaPayTransfer implements Transfer {
-
+public class toInstaPayTransfer implements Transfer
+{
     @Override
-    public boolean transfer(Account acc, int amount, User currentuser) {
-        if ((database.bankDatabase.checkExistance(((bankAccount) acc).getBankAccountID()))) {
-            if(!database.instaDatabase.checkBalance(currentuser.getInstaID(),amount))
+    public boolean transfer(Account acc, int amount, User currentuser)
+    {
+        if(!database.instaDatabase.checkBalance(currentuser.getInstaID(),amount))
+        {
+            System.out.println("Your balance is not enough!");
+            System.out.println();
+            return false;
+        }
+        database.instaDatabase.removeCredit(currentuser.getInstaID(),amount);
+        if(acc instanceof bankAccount)
+        {
+            database.bankDatabase.addCredit(((bankAccount) acc).getBankAccountID(),amount);
+            try
             {
-                System.out.println("Your balance is not enough!");
-                System.out.println();
-                return false;
+                database.instaDatabase.addCredit(getUser(((bankAccount) acc).getBankAccountID(),"bank").getInstaID(), amount);
             }
-            else {
-                database.bankDatabase.removeCredit(((instaPayBankUser) currentuser).getBankAccountID(),amount);
-                database.bankDatabase.addCredit(((bankAccount) acc).getBankAccountID(),amount);
-                database.instaDatabase.removeCredit(currentuser.getInstaID(),amount);
-                try
-                {
-                    database.instaDatabase.addCredit(getUser(((bankAccount) acc).getBankAccountID(),"bank").getInstaID(), amount);
-                }
-                catch(Exception e)
-                {
+            catch(Exception e)
+            {
 
-                }
+            }
+            if(currentuser.getType().equals(userType.instaPayBankUser))
+            {
+                database.bankDatabase.removeCredit(((instaPayBankUser) currentuser).getBankAccountID(),amount);
                 return true;
             }
-
-        } else if ((database.walletDatabase.checkExistance(((walletAccount) acc).getMobileNumber()))) {
-            if(!database.instaDatabase.checkBalance(currentuser.getInstaID(),amount))
+            else
             {
-                System.out.println("Your balance is not enough!");
-                System.out.println();
-                return false;
-            }
-            else {
                 database.walletDatabase.removeCredit(currentuser.getMobileNumber(),amount);
-                database.walletDatabase.addCredit(acc.getMobileNumber(),amount);
-                database.instaDatabase.removeCredit(currentuser.getInstaID(),amount);
-                try
-                {
-                    database.instaDatabase.addCredit(getUser(acc.getMobileNumber()).getInstaID(), amount);
-                }
-                catch(Exception e)
-                {
-
-                }
+                return true;
             }
-            return true;
+        }
+        else if(acc instanceof walletAccount)
+        {
 
-        } else {
+            database.walletDatabase.addCredit(acc.getMobileNumber(),amount);
+            try
+            {
+                database.instaDatabase.addCredit(getUser(acc.getMobileNumber()).getInstaID(), amount);
+            }
+            catch(Exception e)
+            {
+
+            }
+            if(currentuser.getType().equals(userType.instaPayBankUser))
+            {
+                database.bankDatabase.removeCredit(((instaPayBankUser) currentuser).getBankAccountID(),amount);
+                return true;
+            }
+            else
+            {
+                database.walletDatabase.removeCredit(currentuser.getMobileNumber(),amount);
+                return true;
+            }
+        }
+        else
+        {
             System.out.println("Couldn't find the user you want to transfer to!");
             System.out.println();
             return false;
         }
     }
-
 }

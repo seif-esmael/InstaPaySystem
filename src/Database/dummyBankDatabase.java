@@ -28,9 +28,12 @@ public class dummyBankDatabase extends dummyDatabase
     {
         for(Account a : accounts)
         {
-            if(((bankAccount) a).getBankAccountID() == id)
+            if(a instanceof bankAccount)
             {
-                return true;
+                if(((bankAccount) a).getBankAccountID() == id)
+                {
+                    return true;
+                }
             }
         }
         return false;

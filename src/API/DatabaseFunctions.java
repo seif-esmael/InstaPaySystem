@@ -4,7 +4,7 @@ import User.instaPayBankUser;
 import User.User;
 import User.userType;
 
-public class InstaPayAPI
+public class DatabaseFunctions
 {
     public boolean transfertoInstaPay(int ID,double amount)
     {

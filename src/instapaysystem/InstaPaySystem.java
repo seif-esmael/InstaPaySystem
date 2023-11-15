@@ -1,7 +1,7 @@
 package instapaysystem;
 
 import API.BankAPI;
-import API.InstaPayAPI;
+import API.DatabaseFunctions;
 import API.WalletAPI;
 import Authentication.RegisterContext;
 import Bills.billsPayment;
@@ -17,9 +17,9 @@ import Authentication.siginIn;
 import Authentication.walletRegister;
 import java.util.Scanner;
 import java.util.Vector;
-import static API.InstaPayAPI.*;
+import static API.DatabaseFunctions.*;
 
-public class InstaPaySystem implements  siginIn
+public class InstaPaySystem implements siginIn
 {
     private User currentUser;
     private int idsforusers = 100;
@@ -116,10 +116,10 @@ public class InstaPaySystem implements  siginIn
                                     TransferFactory transferfactory = new TransferFactory();
                                     Transfer transfer = transferfactory.createTransferTransaction("toinstapay");
 
-                                    if(InstaPayAPI.getUser(id,"insta")!=null)
+                                    if(DatabaseFunctions.getUser(id,"insta")!=null)
                                     {
-                                        if (((InstaPayAPI.getUser(id, "insta")).getType() == userType.instaPayBankUser)) {
-                                            if (transfer.transfer(BankAPI.getAcc(((instaPayBankUser)InstaPayAPI.getUser(id, "insta")).getBankAccountID()), amount, currentUser)) {
+                                        if (((DatabaseFunctions.getUser(id, "insta")).getType() == userType.instaPayBankUser)) {
+                                            if (transfer.transfer(BankAPI.getAcc(((instaPayBankUser) DatabaseFunctions.getUser(id, "insta")).getBankAccountID()), amount, currentUser)) {
                                                 System.out.println("Transfer was successfully done!");
                                                 System.out.println();
                                             } else {
@@ -127,7 +127,7 @@ public class InstaPaySystem implements  siginIn
                                                 System.out.println();
                                             }
                                         }
-                                        else if(((InstaPayAPI.getUser(id, "insta")).getType() == userType.instaPayWalletUser)){
+                                        else if(((DatabaseFunctions.getUser(id, "insta")).getType() == userType.instaPayWalletUser)){
                                             if(transfer.transfer(WalletAPI.getAcc(getUser(id, "insta").getMobileNumber()),amount,currentUser))
                                             {
                                                 System.out.println("Transfer was successfully done!");
@@ -141,13 +141,11 @@ public class InstaPaySystem implements  siginIn
 
                                         }
                                     }
-                                    else {
+                                    else
+                                    {
                                         System.out.println("Couldn't find the user you want to transfer to!");
                                         System.out.println();
                                     }
-
-
-
 
                                 }
                                 else if(c.equals("4"))
@@ -199,10 +197,10 @@ public class InstaPaySystem implements  siginIn
                                     TransferFactory transferfactory = new TransferFactory();
                                     Transfer transfer = transferfactory.createTransferTransaction("toinstapay");
 
-                                    if(InstaPayAPI.getUser(id,"insta")!=null)
+                                    if(DatabaseFunctions.getUser(id,"insta")!=null)
                                     {
-                                        if (((InstaPayAPI.getUser(id, "insta")).getType() == userType.instaPayBankUser)) {
-                                            if (transfer.transfer(BankAPI.getAcc(id), amount, currentUser)) {
+                                        if (((DatabaseFunctions.getUser(id, "insta")).getType() == userType.instaPayBankUser)) {
+                                            if (transfer.transfer(BankAPI.getAcc(((instaPayBankUser)getUser(id,"insta")).getBankAccountID()), amount, currentUser)) {
                                                 System.out.println("Transfer was successfully done!");
                                                 System.out.println();
                                             } else {
@@ -210,7 +208,7 @@ public class InstaPaySystem implements  siginIn
                                                 System.out.println();
                                             }
                                         }
-                                        else if(((InstaPayAPI.getUser(id, "insta")).getType() == userType.instaPayWalletUser)){
+                                        else if(((DatabaseFunctions.getUser(id, "insta")).getType() == userType.instaPayWalletUser)){
                                             if(transfer.transfer(WalletAPI.getAcc(getUser(id, "insta").getMobileNumber()),amount,currentUser))
                                             {
                                                 System.out.println("Transfer was successfully done!");
@@ -221,7 +219,6 @@ public class InstaPaySystem implements  siginIn
                                                 System.out.println("Transfer couldn't be completed!");
                                                 System.out.println();
                                             }
-
                                         }
                                     }
                                     else {
@@ -440,7 +437,6 @@ public class InstaPaySystem implements  siginIn
         }
     }
     //------------------------------------------------------------------------------------------------------------------
-    //------------------------------------------------------------------------------------------------------------------
     public User signIn()
     {
         Scanner data = new Scanner(System.in);
@@ -468,125 +464,4 @@ public class InstaPaySystem implements  siginIn
         return null;
     }
     //------------------------------------------------------------------------------------------------------------------
-    // **This Section for InstaPayAPI**
-//    @Override
-//    public boolean transfertoInstaPay(int ID, double amount)
-//    {
-//        if(!database.instaDatabase.checkExistance(ID))
-//        {
-//            System.out.println("Couldn't find the user you want to transfer to!");
-//            System.out.println();
-//            return false;
-//        }
-//        if(!database.instaDatabase.checkBalance(currentUser.getInstaID(),amount))
-//        {
-//            System.out.println("Your balance is not enough!");
-//            System.out.println();
-//            return false;
-//        }
-//        if(getUser(ID,"insta").type.equals(userType.instaPayBankUser))
-//        {
-//            database.bankDatabase.addCredit(ID,amount);
-//        }
-//        else
-//        {
-//            database.walletDatabase.addCredit(getUser(ID,"insta").mobileNumber,amount);
-//        }
-//        if(currentUser.type.equals(userType.instaPayBankUser))
-//        {
-//            database.bankDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
-//        }
-//        else
-//        {
-//            database.walletDatabase.removeCredit(currentUser.mobileNumber,amount);
-//        }
-//        database.instaDatabase.addCredit(ID,amount);
-//        database.instaDatabase.removeCredit(currentUser.getInstaID(),amount);
-//        return true;
-//    }
-
-
-    //------------------------------------------------------------------------------------------------------------------
-    // **This Section for WalletAPI**
-//    @Override
-//    public boolean transferToWallet(String mobilenumber, double amount)
-//    {
-//        if(!database.walletDatabase.checkExistance(mobilenumber))
-//        {
-//            System.out.println("Couldn't find the user you want to transfer to!");
-//            System.out.println();
-//            return false;
-//        }
-//        if(currentUser.type.equals(userType.instaPayBankUser))
-//        {
-//            if(!database.bankDatabase.checkBalance(((instaPayBankUser) currentUser).getBankAccountID(),amount))
-//            {
-//                System.out.println("Your balance is not enough!");
-//                System.out.println();
-//                return false;
-//            }
-//            database.bankDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
-//        }
-//        else
-//        {
-//            if(!database.walletDatabase.checkBalance(currentUser.mobileNumber,amount))
-//            {
-//                System.out.println("Your balance is not enough!");
-//                System.out.println();
-//                return false;
-//            }
-//            database.walletDatabase.removeCredit(currentUser.mobileNumber,amount);
-//        }
-//        database.walletDatabase.addCredit(mobilenumber,amount);
-//        try
-//        {
-//            database.instaDatabase.addCredit(getUser(mobilenumber).getInstaID(), amount);
-//        }
-//        catch(Exception e)
-//        {
-//
-//        }
-//        database.instaDatabase.removeCredit(currentUser.getInstaID(),amount);
-//        return true;
-//    }
-//
-
-
-    //------------------------------------------------------------------------------------------------------------------  
-    // **This Section for BankAPI** 
-//    @Override
-//    public boolean transferToBank(int ID, double amount)
-//    {
-//        if(!database.bankDatabase.checkExistance(ID))
-//        {
-//            System.out.println("Couldn't find the user you want to transfer to!");
-//            System.out.println();
-//            return false;
-//        }
-//        if(!database.bankDatabase.checkBalance(((instaPayBankUser)currentUser).getBankAccountID(),amount))
-//        {
-//            System.out.println("Your balance is not enough!");
-//            System.out.println();
-//            return false;
-//        }
-//        database.bankDatabase.addCredit(ID,amount);
-//        database.bankDatabase.removeCredit(((instaPayBankUser) currentUser).getBankAccountID(),amount);
-//
-//        try
-//        {
-//            database.instaDatabase.addCredit(getUser(ID,"bank").getInstaID(),amount);
-//        }
-//        catch(Exception e)
-//        {
-//
-//        }
-//        database.instaDatabase.removeCredit(currentUser.getInstaID(),amount);
-//
-//
-//        return true;
-//    }
-
-
-
-
 }

@@ -2,6 +2,8 @@ package API;
 
 import Database.Account;
 import Database.walletAccount;
+import Database.database;
+import Database.dummyDatabase;
 
 public class WalletAPI
 {
@@ -11,7 +13,7 @@ public class WalletAPI
     }
     //_____________________________________________________________________________
     public static boolean search(String mobileNumber) {
-        for (Account a : Database.database.walletDatabase.getAccounts()) {
+        for (Account a : database.walletDatabase.getAccounts()) {
             if (a instanceof walletAccount) {
                 walletAccount walletAcc = (walletAccount) a;
                 if (walletAcc.getMobileNumber().equals(mobileNumber)) {
@@ -23,7 +25,7 @@ public class WalletAPI
     }
     //_____________________________________________________________________________    
     public static Account getAcc(String mobileNumber) {
-        for (Account a : Database.database.walletDatabase.getAccounts()) {
+        for (Account a : database.walletDatabase.getAccounts()) {
             if (a instanceof walletAccount) {
                 walletAccount walletAcc = (walletAccount) a;
                 if (walletAcc.getMobileNumber().equals(mobileNumber)) {

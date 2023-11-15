@@ -1,15 +1,14 @@
 package Authentication;
 
 import API.WalletAPI;
-import API.InstaPayAPI;
+import API.DatabaseFunctions;
 import User.User;
-import API.WalletAPI;
 import User.instaPayWalletUser;
 import java.util.Random;
 import java.util.Scanner;
 
-import static API.InstaPayAPI.getUser;
-import static API.InstaPayAPI.search;
+import static API.DatabaseFunctions.getUser;
+import static API.DatabaseFunctions.search;
 
 public class walletRegister implements OTP, Register
 {
@@ -39,7 +38,7 @@ public class walletRegister implements OTP, Register
             System.out.println();
             System.out.println("You already registered!");
             System.out.println();
-            return InstaPayAPI.getUser(eWallet_phone_number);
+            return DatabaseFunctions.getUser(eWallet_phone_number);
         }
         if(WalletAPI.search(eWallet_phone_number))
         {
@@ -67,7 +66,7 @@ public class walletRegister implements OTP, Register
                 }
             }
             double ewallet_balance = (WalletAPI.getAcc(eWallet_phone_number)).getBalance();
-            instaPayWalletUser myuser = new instaPayWalletUser(email,password,eWallet_phone_number,idsforusers++,ewallet_balance);
+            instaPayWalletUser myuser = new instaPayWalletUser(email,password,eWallet_phone_number,idsforusers,ewallet_balance);
             System.out.println("Your new account has been created!");
             System.out.println();
             return myuser;

@@ -1,7 +1,6 @@
 package Authentication;
 
 import API.BankAPI;
-import API.BankAPI;
 import User.User;
 import Database.bankAccount;
 import User.instaPayBankUser;
@@ -9,8 +8,8 @@ import java.util.Random;
 import java.util.Scanner;
 
 import static API.BankAPI.getAcc;
-import static API.InstaPayAPI.getUser;
-import static API.InstaPayAPI.search;
+import static API.DatabaseFunctions.getUser;
+import static API.DatabaseFunctions.search;
 
 public class bankRegister implements OTP,Register
 {

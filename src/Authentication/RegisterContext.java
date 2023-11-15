@@ -1,7 +1,6 @@
 package Authentication;
 
-import API.InstaPayAPI;
-import Authentication.Register;
+import API.DatabaseFunctions;
 import User.User;
 
 public class RegisterContext {
@@ -13,6 +12,6 @@ public class RegisterContext {
 
     public void addUser(User myuser)
     {
-        InstaPayAPI.addUser(myuser);
+        DatabaseFunctions.addUser(myuser);
     }
 }
