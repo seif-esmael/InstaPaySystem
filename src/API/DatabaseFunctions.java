@@ -75,11 +75,11 @@ public class DatabaseFunctions
         Database.dummyInstaPayDatabase.addCredit(currentUser.getInstaID(), amount);
         if(currentUser.getType().equals(userType.instaPayBankUser))
         {
-            Database.database.bankDatabase.addCredit(((instaPayBankUser)currentUser).getBankAccountID(), amount);
+            BankAPI.addCredit(((instaPayBankUser)currentUser).getBankAccountID(), amount);
         }
         else
         {
-            Database.dummyWalletDatabase.addCredit(currentUser.getMobileNumber(), amount);
+            WalletAPI.addCredit(currentUser.getMobileNumber(), amount);
         }
         return true;
     }                   
@@ -93,11 +93,11 @@ public class DatabaseFunctions
         Database.dummyInstaPayDatabase.removeCredit(currentUser.getInstaID(), amount);
         if(currentUser.getType().equals(userType.instaPayBankUser))
         {
-            Database.database.bankDatabase.removeCredit(((instaPayBankUser)currentUser).getBankAccountID(), amount);
+            BankAPI.removeCredit(((instaPayBankUser)currentUser).getBankAccountID(), amount);
         }
         else
         {
-            Database.dummyWalletDatabase.removeCredit(currentUser.getMobileNumber(), amount);
+            WalletAPI.removeCredit(currentUser.getMobileNumber(), amount);
         }
         return true;
     }

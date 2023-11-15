@@ -1,6 +1,6 @@
 package User;
 
-import Bills.bill;
+import Bills.Bill;
 import Bills.billType;
 
 public class instaPayBankUser extends User
@@ -15,9 +15,9 @@ public class instaPayBankUser extends User
         this.mobileNumber = mobilenumber;
         this.type = userType.instaPayBankUser;
         this.instaPayID=instapayID;
-        this.bills.add(new bill(billType.waterBill));
-        this.bills.add(new bill(billType.gasBill));
-        this.bills.add(new bill(billType.electricityBill));
+        this.bills.add(new Bill(billType.waterBill));
+        this.bills.add(new Bill(billType.gasBill));
+        this.bills.add(new Bill(billType.electricityBill));
         this.bankAccountID = bankID;
         this.balance = balance;
     }    

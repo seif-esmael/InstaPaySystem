@@ -1,4 +1,6 @@
 package Transactions;
+import API.BankAPI;
+import API.WalletAPI;
 import Database.Account;
 import Database.database;
 import User.userType;
@@ -27,15 +29,15 @@ public class toWalletTransfer implements Transfer{
                 System.out.println();
                 return false;
             }
-            database.walletDatabase.addCredit(acc.getMobileNumber(),amount);
+            WalletAPI.addCredit(acc.getMobileNumber(),amount);
             database.instaDatabase.removeCredit(currentuser.getInstaID(),amount);
             if(currentuser.getType() == userType.instaPayWalletUser)
             {
-                database.walletDatabase.removeCredit(currentuser.getMobileNumber(),amount);
+                WalletAPI.removeCredit(currentuser.getMobileNumber(),amount);
             }
             else if(currentuser.getType() ==userType.instaPayBankUser)
             {
-                database.bankDatabase.removeCredit(((instaPayBankUser) currentuser).getBankAccountID(),amount);
+                BankAPI.removeCredit(((instaPayBankUser) currentuser).getBankAccountID(),amount);
             }
             try
             {

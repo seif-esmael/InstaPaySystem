@@ -1,5 +1,6 @@
 package Transactions;
 
+import API.*;
 import Database.Account;
 import Database.bankAccount;
 import Database.database;
@@ -15,7 +16,7 @@ public class toBankTransfer implements Transfer
     {
         if(acc instanceof bankAccount)
         {
-            if(!database.bankDatabase.checkExistance(((bankAccount) acc).getBankAccountID()))
+            if(!BankAPI.checkExistance(((bankAccount) acc).getBankAccountID()))
             {
                 System.out.println("Couldn't find the user you want to transfer to!");
                 System.out.println();
@@ -28,14 +29,14 @@ public class toBankTransfer implements Transfer
                 return false;
             }
             database.instaDatabase.removeCredit(currentuser.getInstaID(),amount);
-            database.bankDatabase.addCredit(((bankAccount) acc).getBankAccountID(),amount);
+            BankAPI.addCredit(((bankAccount) acc).getBankAccountID(),amount);
             if(currentuser.getType().equals(userType.instaPayBankUser))
             {
-                database.bankDatabase.removeCredit(((instaPayBankUser) currentuser).getBankAccountID(),amount);
+                BankAPI.removeCredit(((instaPayBankUser) currentuser).getBankAccountID(),amount);
             }
             else
             {
-                Database.dummyWalletDatabase.removeCredit(currentuser.getMobileNumber(),amount);
+                WalletAPI.removeCredit(currentuser.getMobileNumber(),amount);
             }
             try
             {

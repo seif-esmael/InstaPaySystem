@@ -5,7 +5,7 @@ import API.DatabaseFunctions;
 import API.WalletAPI;
 import Authentication.RegisterContext;
 import Bills.billsPayment;
-import Bills.bill;
+import Bills.Bill;
 import Database.database;
 import Transactions.Transfer;
 import Transactions.TransferFactory;
@@ -274,24 +274,24 @@ public class InstaPaySystem implements siginIn
                                     {
                                         System.out.println("Invalid index!");
                                     }
-                                    else if(((bill)spare.elementAt(ccc-1)).getAmount() > currentUser.getBalance())
+                                    else if(((Bill)spare.elementAt(ccc-1)).getAmount() > currentUser.getBalance())
                                     {
                                         System.out.println("Your balance is not enough!");
                                     }
-                                    else if(((bill)spare.elementAt(ccc-1)).getStatus())
+                                    else if(((Bill)spare.elementAt(ccc-1)).getStatus())
                                     {
                                         System.out.println("You already paid it!");
                                     }
                                     else
                                     {
-                                        database.instaDatabase.removeCredit(currentUser.getInstaID(),((bill)spare.elementAt(ccc-1)).getAmount());
+                                        database.instaDatabase.removeCredit(currentUser.getInstaID(),((Bill)spare.elementAt(ccc-1)).getAmount());
                                         if(currentUser.getType().equals(userType.instaPayBankUser))
                                         {
-                                            database.bankDatabase.removeCredit(((instaPayBankUser)currentUser).getBankAccountID(),((bill)spare.elementAt(ccc-1)).getAmount());
+                                            BankAPI.removeCredit(((instaPayBankUser)currentUser).getBankAccountID(),((Bill)spare.elementAt(ccc-1)).getAmount());
                                         }
                                         else
                                         {
-                                            database.walletDatabase.removeCredit(currentUser.getMobileNumber(),((bill)spare.elementAt(ccc-1)).getAmount());
+                                            WalletAPI.removeCredit(currentUser.getMobileNumber(),((Bill)spare.elementAt(ccc-1)).getAmount());
                                         }
                                         spare.elementAt(ccc-1).pay();
                                     }

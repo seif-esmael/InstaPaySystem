@@ -35,4 +35,27 @@ public class WalletAPI
         }
         return null;
     }
+    public static void removeCredit(String mobileNumber, double amount)
+    {
+        for(Account a : database.walletDatabase.getAccounts())
+        {
+            if(a instanceof walletAccount && ((walletAccount) a).getMobileNumber().equals(mobileNumber))
+            {
+                ((walletAccount) a).setBalance(((walletAccount) a).getBalance() - amount);
+                break;
+            }
+        }
+    }
+
+    public static void addCredit(String mobileNumber, double amount)
+    {
+        for(Account a : database.walletDatabase.getAccounts())
+        {
+            if(a instanceof walletAccount && ((walletAccount) a).getMobileNumber().equals(mobileNumber))
+            {
+                ((walletAccount) a).setBalance(((walletAccount) a).getBalance() + amount);
+                break;
+            }
+        }
+    }
 }

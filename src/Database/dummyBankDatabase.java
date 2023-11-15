@@ -24,58 +24,5 @@ public class dummyBankDatabase extends dummyDatabase
         accounts.add(seif);
         //--------------------------------------------------------------------------------------------------------------
     }
-    public boolean checkExistance(int id)
-    {
-        for(Account a : accounts)
-        {
-            if(a instanceof bankAccount)
-            {
-                if(((bankAccount) a).getBankAccountID() == id)
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    public boolean checkBalance(int id, double amount)
-    {
-        for(Account a : accounts)
-        {
-            if(a instanceof bankAccount &&((bankAccount) a).getBankAccountID() == id)
-            {
-                if(((bankAccount) a).getBalance() < amount)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    public void addCredit(int id, double amount)
-    {
-        for(Account a : accounts)
-        {
-            if(a instanceof bankAccount && ((bankAccount) a).getBankAccountID() == id)
-            {
-                a.setBalance(a.getBalance() + amount);
-                break;
-            }
-        }
-    }
-    public void removeCredit(int id, double amount)
-    {
-        for(Account a : accounts)
-        {
-            if(a instanceof bankAccount &&((bankAccount) a).getBankAccountID() == id)
-            {
-                a.setBalance(a.getBalance() - amount);
-                break;
-            }
-        }
-    }
+
 }

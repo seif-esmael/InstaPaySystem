@@ -1,6 +1,6 @@
 package User;
 
-import Bills.bill;
+import Bills.Bill;
 import Bills.billsPayment;
 import java.util.Vector;
 
@@ -44,9 +44,9 @@ public abstract class User
         int cnt = 1;
         for(billsPayment i : bills)
         {
-            System.out.print(cnt + "- " + ((bill) i).getType() + " price: " + ((bill) i).getAmount());
+            System.out.print(cnt + "- " + ((Bill) i).getType() + " price: " + ((Bill) i).getAmount());
             cnt++;
-            if(((bill) i).getStatus())
+            if(((Bill) i).getStatus())
             {
                 System.out.print(" paid");
             }

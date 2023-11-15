@@ -42,4 +42,59 @@ public class BankAPI
         }
         return null;
     }
+
+    public static boolean checkExistance(int id)
+    {
+        for(Account a :  database.bankDatabase.getAccounts())
+        {
+            if(a instanceof bankAccount)
+            {
+                if(((bankAccount) a).getBankAccountID() == id)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public static boolean checkBalance(int id, double amount)
+    {
+        for(Account a :  database.bankDatabase.getAccounts())
+        {
+            if(a instanceof bankAccount &&((bankAccount) a).getBankAccountID() == id)
+            {
+                if(((bankAccount) a).getBalance() < amount)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public static void addCredit(int id, double amount)
+    {
+        for(Account a :  database.bankDatabase.getAccounts())
+        {
+            if(a instanceof bankAccount && ((bankAccount) a).getBankAccountID() == id)
+            {
+                a.setBalance(a.getBalance() + amount);
+                break;
+            }
+        }
+    }
+    public static void removeCredit(int id, double amount)
+    {
+        for(Account a :  database.bankDatabase.getAccounts())
+        {
+            if(a instanceof bankAccount &&((bankAccount) a).getBankAccountID() == id)
+            {
+                a.setBalance(a.getBalance() - amount);
+                break;
+            }
+        }
+    }
 }

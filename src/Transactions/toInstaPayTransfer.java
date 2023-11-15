@@ -1,5 +1,6 @@
 package Transactions;
 
+import API.*;
 import Database.Account;
 import Database.bankAccount;
 import Database.database;
@@ -22,7 +23,7 @@ public class toInstaPayTransfer implements Transfer
         database.instaDatabase.removeCredit(currentuser.getInstaID(),amount);
         if(acc instanceof bankAccount)
         {
-            database.bankDatabase.addCredit(((bankAccount) acc).getBankAccountID(),amount);
+            BankAPI.addCredit(((bankAccount) acc).getBankAccountID(),amount);
             try
             {
                 database.instaDatabase.addCredit(getUser(((bankAccount) acc).getBankAccountID(),"bank").getInstaID(), amount);
@@ -33,19 +34,19 @@ public class toInstaPayTransfer implements Transfer
             }
             if(currentuser.getType().equals(userType.instaPayBankUser))
             {
-                database.bankDatabase.removeCredit(((instaPayBankUser) currentuser).getBankAccountID(),amount);
+                BankAPI.removeCredit(((instaPayBankUser) currentuser).getBankAccountID(),amount);
                 return true;
             }
             else
             {
-                database.walletDatabase.removeCredit(currentuser.getMobileNumber(),amount);
+                WalletAPI.removeCredit(currentuser.getMobileNumber(),amount);
                 return true;
             }
         }
         else if(acc instanceof walletAccount)
         {
 
-            database.walletDatabase.addCredit(acc.getMobileNumber(),amount);
+            WalletAPI.addCredit(acc.getMobileNumber(),amount);
             try
             {
                 database.instaDatabase.addCredit(getUser(acc.getMobileNumber()).getInstaID(), amount);
@@ -56,12 +57,12 @@ public class toInstaPayTransfer implements Transfer
             }
             if(currentuser.getType().equals(userType.instaPayBankUser))
             {
-                database.bankDatabase.removeCredit(((instaPayBankUser) currentuser).getBankAccountID(),amount);
+                BankAPI.removeCredit(((instaPayBankUser) currentuser).getBankAccountID(),amount);
                 return true;
             }
             else
             {
-                database.walletDatabase.removeCredit(currentuser.getMobileNumber(),amount);
+                WalletAPI.removeCredit(currentuser.getMobileNumber(),amount);
                 return true;
             }
         }

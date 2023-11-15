@@ -43,27 +43,6 @@ public class dummyWalletDatabase extends dummyDatabase
         return false;
     }
     //_____________________________________________________________________________________________
-    public static void addCredit(String mobileNumber, double amount)
-    {
-        for(Account a : accounts)
-        {
-            if(a instanceof walletAccount && ((walletAccount) a).getMobileNumber().equals(mobileNumber))
-            {
-                ((walletAccount) a).setBalance(((walletAccount) a).getBalance() + amount);
-                break;
-            }
-        }
-    }
+
     //_____________________________________________________________________________________________
-    public static void removeCredit(String mobileNumber, double amount)
-    {
-        for(Account a : accounts)
-        {
-            if(a instanceof walletAccount && ((walletAccount) a).getMobileNumber().equals(mobileNumber))
-            {
-                ((walletAccount) a).setBalance(((walletAccount) a).getBalance() - amount);
-                break;
-            }
-        }
-    }
 }

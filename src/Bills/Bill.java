@@ -2,12 +2,12 @@ package Bills;
 
 import java.util.Random;
 
-public class bill implements billsPayment
+public class Bill implements billsPayment
 {
     protected double amount;
     protected billType type;
-    protected static boolean paid = false;
-    public bill(billType b)
+    protected boolean paid = false;
+    public Bill(billType b)
     {
         type = b;
         Random random = new Random();
