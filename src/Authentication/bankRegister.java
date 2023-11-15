@@ -1,14 +1,20 @@
-package instapaysystem;
+package Authentication;
 
+import API.BankAPI;
+import API.BankAPI;
+import User.User;
+import Database.bankAccount;
+import User.instaPayBankUser;
 import java.util.Random;
 import java.util.Scanner;
 
-import static instapaysystem.BankAPI.getAcc;
-import static instapaysystem.InstaPayAPI.getUser;
-import static instapaysystem.InstaPayAPI.search;
+import static API.BankAPI.getAcc;
+import static API.InstaPayAPI.getUser;
+import static API.InstaPayAPI.search;
 
 public class bankRegister implements OTP,Register
 {
+    @Override
     public User registeration(int idsforusers)
     {
         String bank_email, bank_password, bank_phone_number, email, password;

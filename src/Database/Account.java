@@ -1,4 +1,4 @@
-package instapaysystem;
+package Database;
 public abstract class Account
 {
     private String userName;

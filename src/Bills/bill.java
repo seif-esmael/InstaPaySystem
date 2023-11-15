@@ -1,4 +1,4 @@
-package instapaysystem;
+package Bills;
 
 import java.util.Random;
 
@@ -6,8 +6,8 @@ public class bill implements billsPayment
 {
     protected double amount;
     protected billType type;
-    protected boolean paid = false;
-    bill(billType b)
+    protected static boolean paid = false;
+    public bill(billType b)
     {
         type = b;
         Random random = new Random();
@@ -21,9 +21,10 @@ public class bill implements billsPayment
     {
         return amount;
     }
+    @Override
     public void pay()
     {
-        paid = true;
+         paid = true;
     }
     public boolean getStatus()
     {

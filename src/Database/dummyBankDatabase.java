@@ -1,4 +1,6 @@
-package instapaysystem;
+package Database;
+
+
 import java.util.Vector;
 public class dummyBankDatabase extends dummyDatabase
 {
@@ -37,7 +39,7 @@ public class dummyBankDatabase extends dummyDatabase
     {
         for(Account a : accounts)
         {
-            if(((bankAccount) a).getBankAccountID() == id)
+            if(a instanceof bankAccount &&((bankAccount) a).getBankAccountID() == id)
             {
                 if(((bankAccount) a).getBalance() < amount)
                 {
@@ -55,7 +57,7 @@ public class dummyBankDatabase extends dummyDatabase
     {
         for(Account a : accounts)
         {
-            if(((bankAccount) a).getBankAccountID() == id)
+            if(a instanceof bankAccount && ((bankAccount) a).getBankAccountID() == id)
             {
                 a.setBalance(a.getBalance() + amount);
                 break;
@@ -66,7 +68,7 @@ public class dummyBankDatabase extends dummyDatabase
     {
         for(Account a : accounts)
         {
-            if(((bankAccount) a).getBankAccountID() == id)
+            if(a instanceof bankAccount &&((bankAccount) a).getBankAccountID() == id)
             {
                 a.setBalance(a.getBalance() - amount);
                 break;

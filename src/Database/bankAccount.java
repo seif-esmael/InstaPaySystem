@@ -1,4 +1,4 @@
-package instapaysystem;
+package Database;
 
 public class bankAccount extends Account
 {

@@ -1,14 +1,19 @@
-package instapaysystem;
+package Authentication;
 
+import API.WalletAPI;
+import API.InstaPayAPI;
+import User.User;
+import API.WalletAPI;
+import User.instaPayWalletUser;
 import java.util.Random;
 import java.util.Scanner;
 
-import static instapaysystem.BankAPI.getAcc;
-import static instapaysystem.InstaPayAPI.getUser;
-import static instapaysystem.InstaPayAPI.search;
+import static API.InstaPayAPI.getUser;
+import static API.InstaPayAPI.search;
 
 public class walletRegister implements OTP, Register
 {
+    @Override
     public User registeration(int idsforusers)
     {
         Scanner data = new Scanner(System.in);

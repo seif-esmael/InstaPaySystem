@@ -1,8 +1,12 @@
-package instapaysystem;
+package Authentication;
+
+import API.InstaPayAPI;
+import Authentication.Register;
+import User.User;
 
 public class RegisterContext {
     public Register register;
-    RegisterContext(Register r){
+    public RegisterContext(Register r){
         register = r;
     }
 

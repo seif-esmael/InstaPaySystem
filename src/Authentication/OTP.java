@@ -1,4 +1,4 @@
-package instapaysystem;
+package Authentication;
 
 public interface OTP {
     public int sendOTP();

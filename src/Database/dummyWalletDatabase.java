@@ -1,5 +1,4 @@
-package instapaysystem;
-import java.util.Vector;
+package Database;
 public class dummyWalletDatabase extends dummyDatabase
 {
     dummyWalletDatabase()
@@ -17,18 +16,19 @@ public class dummyWalletDatabase extends dummyDatabase
     {
         for(Account a : accounts)
         {
-            if(((walletAccount) a).getMobileNumber().equals(mobileNumber))
+            if(a instanceof walletAccount &&((walletAccount) a).getMobileNumber().equals(mobileNumber))
             {
                 return true;
             }
         }
         return false;
     }
+    //_____________________________________________________________________________________________
     public boolean checkBalance(String mobileNumber, double amount)
     {
         for(Account a : accounts)
         {
-            if(((walletAccount) a).getMobileNumber().equals(mobileNumber))
+            if(a instanceof walletAccount && ((walletAccount) a).getMobileNumber().equals(mobileNumber))
             {
                 if(((walletAccount) a).getBalance() < amount)
                 {
@@ -42,22 +42,24 @@ public class dummyWalletDatabase extends dummyDatabase
         }
         return false;
     }
-    public void addCredit(String mobileNumber, double amount)
+    //_____________________________________________________________________________________________
+    public static void addCredit(String mobileNumber, double amount)
     {
         for(Account a : accounts)
         {
-            if(((walletAccount) a).getMobileNumber().equals(mobileNumber))
+            if(a instanceof walletAccount && ((walletAccount) a).getMobileNumber().equals(mobileNumber))
             {
                 ((walletAccount) a).setBalance(((walletAccount) a).getBalance() + amount);
                 break;
             }
         }
     }
-    public void removeCredit(String mobileNumber, double amount)
+    //_____________________________________________________________________________________________
+    public static void removeCredit(String mobileNumber, double amount)
     {
         for(Account a : accounts)
         {
-            if(((walletAccount) a).getMobileNumber().equals(mobileNumber))
+            if(a instanceof walletAccount && ((walletAccount) a).getMobileNumber().equals(mobileNumber))
             {
                 ((walletAccount) a).setBalance(((walletAccount) a).getBalance() - amount);
                 break;

@@ -1,10 +1,11 @@
-package instapaysystem;
+package Database;
 
+import User.User;
 import java.util.Vector;
 
 public class dummyInstaPayDatabase
 {
-    private Vector<User> users = new Vector();
+    private static Vector<User> users = new Vector();
     public boolean checkExistance(int id)    
     {
         for(User u : users)
@@ -16,11 +17,13 @@ public class dummyInstaPayDatabase
         }
         return false;
     }
-    public void adduser(User u)
+    //____________________________________________________________________________________
+    public static void adduser(User u)
     {
         users.add(u);
     }
-    public boolean checkBalance(int id,double amount)
+    //____________________________________________________________________________________
+    public static boolean checkBalance(int id,double amount)
     {
         for(User u : users)
         {
@@ -38,7 +41,8 @@ public class dummyInstaPayDatabase
         }
         return false;
     }
-    public void addCredit(int id,double amount)
+    //____________________________________________________________________________________
+    public static void addCredit(int id,double amount)
     {
         for(User u : users)
         {
@@ -49,7 +53,8 @@ public class dummyInstaPayDatabase
             }
         }
     }
-    public void removeCredit(int id,double amount)
+    //____________________________________________________________________________________
+    public static void removeCredit(int id,double amount)
     {
         for(User u : users)
         {
@@ -60,8 +65,8 @@ public class dummyInstaPayDatabase
             }
         }
     }
-    
-    public Vector<User> getUsers()
+    //____________________________________________________________________________________
+    public static Vector<User> getUsers()
     {
         return users;
     }

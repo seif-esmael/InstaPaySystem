@@ -1,4 +1,6 @@
-package instapaysystem;
+package Authentication;
+
+import User.User;
 
 public interface siginIn
 {

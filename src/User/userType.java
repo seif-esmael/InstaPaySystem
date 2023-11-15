@@ -1,4 +1,4 @@
-package instapaysystem;
+package User;
 
 public enum userType
 {

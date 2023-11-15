@@ -1,4 +1,4 @@
-package instapaysystem;
+package Bills;
 
 public enum billType
 {

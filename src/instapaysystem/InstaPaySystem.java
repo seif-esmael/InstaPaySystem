@@ -1,15 +1,17 @@
 package instapaysystem;
 
-import java.lang.reflect.Array;
-import java.util.Random;
+import Authentication.RegisterContext;
+import Bills.billsPayment;
+import Bills.bill;
+import User.instaPayBankUser;
+import User.User;
+import User.userType;
+import Authentication.bankRegister;
+import Authentication.siginIn;
+import Authentication.walletRegister;
 import java.util.Scanner;
 import java.util.Vector;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-
-import static instapaysystem.BankAPI.getAcc;
-import static instapaysystem.InstaPayAPI.*;
+import static API.InstaPayAPI.*;
 
 public class InstaPaySystem implements  siginIn
 {
@@ -43,7 +45,7 @@ public class InstaPaySystem implements  siginIn
                     {
                         while(true)
                         {
-                            if(currentUser.type.equals(userType.instaPayBankUser))
+                            if(currentUser.getType().equals(userType.instaPayBankUser))
                             {
                                 System.out.println("1- Transfer to bank account");
                                 System.out.println("2- Transfer to wallet");
@@ -218,16 +220,17 @@ public class InstaPaySystem implements  siginIn
                                     }
                                     else
                                     {
-                                        database.instaDatabase.removeCredit(currentUser.getInstaID(),((bill)spare.elementAt(ccc-1)).getAmount());
+                                        Database.database.instaDatabase.removeCredit(currentUser.getInstaID(),((bill)spare.elementAt(ccc-1)).getAmount());
                                         if(currentUser.getType().equals(userType.instaPayBankUser))
                                         {
-                                            database.bankDatabase.removeCredit(((instaPayBankUser)currentUser).getBankAccountID(),((bill)spare.elementAt(ccc-1)).getAmount());
+                                            Database.database.bankDatabase.removeCredit(((instaPayBankUser)currentUser).getBankAccountID(),((bill)spare.elementAt(ccc-1)).getAmount());
                                         }
                                         else
                                         {
-                                            database.walletDatabase.removeCredit(currentUser.mobileNumber,((bill)spare.elementAt(ccc-1)).getAmount());
+                                            Database.database.walletDatabase.removeCredit(currentUser.getMobileNumber(),((bill)spare.elementAt(ccc-1)).getAmount());
                                         }
                                         spare.elementAt(ccc-1).pay();
+                                        System.out.println("Your bill has been paid successfully!");
                                     }
                                 }
                                 currentUser.setBills(spare);
@@ -282,7 +285,7 @@ public class InstaPaySystem implements  siginIn
                         System.out.println();
                         System.out.println("Your InstaPay ID: " + currentUser.getInstaID());
                         System.out.println();
-                        if(currentUser.type.equals(userType.instaPayBankUser))
+                        if(currentUser.getType().equals(userType.instaPayBankUser))
                         {
                             System.out.println("Your Bank ID: " + ((instaPayBankUser) currentUser).getBankAccountID());
                             System.out.println();
