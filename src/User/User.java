@@ -39,7 +39,7 @@ public abstract class User
         return type;
     }
     //______________________________________________________________________________
-    public void printBills()
+    public void seeBills()
     {
         int cnt = 1;
         for(billsPayment i : bills)

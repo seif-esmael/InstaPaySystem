@@ -1,8 +1,14 @@
 package instapaysystem;
 
+import API.BankAPI;
+import API.InstaPayAPI;
+import API.WalletAPI;
 import Authentication.RegisterContext;
 import Bills.billsPayment;
 import Bills.bill;
+import Database.database;
+import Transactions.Transfer;
+import Transactions.TransferFactory;
 import User.instaPayBankUser;
 import User.User;
 import User.userType;
@@ -61,16 +67,19 @@ public class InstaPaySystem implements  siginIn
                                     System.out.print("Enter amount you want to transfer: ");
                                     int amount = scanner.nextInt();
                                     System.out.println();
-//                                    if(transferToBank(id,amount))
-//                                    {
-//                                        System.out.println("Transfer was successfully done!");
-//                                        System.out.println();
-//                                    }
-//                                    else
-//                                    {
-//                                        System.out.println("Transfer couldn't be completed!");
-//                                        System.out.println();
-//                                    }
+                                    TransferFactory transferfactory = new TransferFactory();
+                                    Transfer transfer = transferfactory.createTransferTransaction("tobank");
+
+                                    if(transfer.transfer(BankAPI.getAcc(id),amount,currentUser))
+                                    {
+                                        System.out.println("Transfer was successfully done!");
+                                        System.out.println();
+                                    }
+                                    else
+                                    {
+                                        System.out.println("Transfer couldn't be completed!");
+                                        System.out.println();
+                                    }
                                 }
                                 else if(c.equals("2"))
                                 {
@@ -80,16 +89,20 @@ public class InstaPaySystem implements  siginIn
                                     System.out.print("Enter amount you want to transfer: ");
                                     int amount = scanner.nextInt();
                                     System.out.println();
-//                                    if(transferToWallet(mobileNumber,amount))
-//                                    {
-//                                        System.out.println("Transfer was successfully done!");
-//                                        System.out.println();
-//                                    }
-//                                    else
-//                                    {
-//                                        System.out.println("Transfer couldn't be completed!");
-//                                        System.out.println();
-//                                    }
+
+                                    TransferFactory transferfactory = new TransferFactory();
+                                    Transfer transfer = transferfactory.createTransferTransaction("towallet");
+
+                                    if(transfer.transfer(WalletAPI.getAcc(mobileNumber),amount,currentUser))
+                                    {
+                                        System.out.println("Transfer was successfully done!");
+                                        System.out.println();
+                                    }
+                                    else
+                                    {
+                                        System.out.println("Transfer couldn't be completed!");
+                                        System.out.println();
+                                    }
                                 }
                                 else if(c.equals("3"))
                                 {
@@ -99,16 +112,43 @@ public class InstaPaySystem implements  siginIn
                                     System.out.print("Enter amount you want to transfer: ");
                                     int amount = scanner.nextInt();
                                     System.out.println();
-//                                    if(transfertoInstaPay(id,amount))
-//                                    {
-//                                        System.out.println("Transfer was successfully done!");
-//                                        System.out.println();
-//                                    }
-//                                    else
-//                                    {
-//                                        System.out.println("Transfer couldn't be completed!");
-//                                        System.out.println();
-//                                    }
+
+                                    TransferFactory transferfactory = new TransferFactory();
+                                    Transfer transfer = transferfactory.createTransferTransaction("toinstapay");
+
+                                    if(InstaPayAPI.getUser(id,"insta")!=null)
+                                    {
+                                        if (((InstaPayAPI.getUser(id, "insta")).getType() == userType.instaPayBankUser)) {
+                                            if (transfer.transfer(BankAPI.getAcc(((instaPayBankUser)InstaPayAPI.getUser(id, "insta")).getBankAccountID()), amount, currentUser)) {
+                                                System.out.println("Transfer was successfully done!");
+                                                System.out.println();
+                                            } else {
+                                                System.out.println("Transfer couldn't be completed!");
+                                                System.out.println();
+                                            }
+                                        }
+                                        else if(((InstaPayAPI.getUser(id, "insta")).getType() == userType.instaPayWalletUser)){
+                                            if(transfer.transfer(WalletAPI.getAcc(getUser(id, "insta").getMobileNumber()),amount,currentUser))
+                                            {
+                                                System.out.println("Transfer was successfully done!");
+                                                System.out.println();
+                                            }
+                                            else
+                                            {
+                                                System.out.println("Transfer couldn't be completed!");
+                                                System.out.println();
+                                            }
+
+                                        }
+                                    }
+                                    else {
+                                        System.out.println("Couldn't find the user you want to transfer to!");
+                                        System.out.println();
+                                    }
+
+
+
+
                                 }
                                 else if(c.equals("4"))
                                 {
@@ -134,16 +174,19 @@ public class InstaPaySystem implements  siginIn
                                     System.out.print("Enter amount you want to transfer: ");
                                     int amount = scanner.nextInt();
                                     System.out.println();
-//                                    if(transferToWallet(mobileNumber,amount))
-//                                    {
-//                                        System.out.println("Transfer was successfully done!");
-//                                        System.out.println();
-//                                    }
-//                                    else
-//                                    {
-//                                        System.out.println("Transfer couldn't be completed!");
-//                                        System.out.println();
-//                                    }
+                                    TransferFactory transferfactory = new TransferFactory();
+                                    Transfer transfer = transferfactory.createTransferTransaction("towallet");
+
+                                    if(transfer.transfer(WalletAPI.getAcc(mobileNumber),amount,currentUser))
+                                    {
+                                        System.out.println("Transfer was successfully done!");
+                                        System.out.println();
+                                    }
+                                    else
+                                    {
+                                        System.out.println("Transfer couldn't be completed!");
+                                        System.out.println();
+                                    }
                                 }
                                 else if(c.equals("2"))
                                 {
@@ -153,16 +196,40 @@ public class InstaPaySystem implements  siginIn
                                     System.out.print("Enter amount you want to transfer: ");
                                     int amount = scanner.nextInt();
                                     System.out.println();
-//                                    if(transfertoInstaPay(id,amount))
-//                                    {
-//                                        System.out.println("Transfer was successfully done!");
-//                                        System.out.println();
-//                                    }
-//                                    else
-//                                    {
-//                                        System.out.println("Transfer couldn't be completed!");
-//                                        System.out.println();
-//                                    }
+                                    TransferFactory transferfactory = new TransferFactory();
+                                    Transfer transfer = transferfactory.createTransferTransaction("toinstapay");
+
+                                    if(InstaPayAPI.getUser(id,"insta")!=null)
+                                    {
+                                        if (((InstaPayAPI.getUser(id, "insta")).getType() == userType.instaPayBankUser)) {
+                                            if (transfer.transfer(BankAPI.getAcc(id), amount, currentUser)) {
+                                                System.out.println("Transfer was successfully done!");
+                                                System.out.println();
+                                            } else {
+                                                System.out.println("Transfer couldn't be completed!");
+                                                System.out.println();
+                                            }
+                                        }
+                                        else if(((InstaPayAPI.getUser(id, "insta")).getType() == userType.instaPayWalletUser)){
+                                            if(transfer.transfer(WalletAPI.getAcc(getUser(id, "insta").getMobileNumber()),amount,currentUser))
+                                            {
+                                                System.out.println("Transfer was successfully done!");
+                                                System.out.println();
+                                            }
+                                            else
+                                            {
+                                                System.out.println("Transfer couldn't be completed!");
+                                                System.out.println();
+                                            }
+
+                                        }
+                                    }
+                                    else {
+                                        System.out.println("Couldn't find the user you want to transfer to!");
+                                        System.out.println();
+                                    }
+
+
                                 }
                                 else if(c.equals("3"))
                                 {
@@ -189,7 +256,7 @@ public class InstaPaySystem implements  siginIn
                         {
                             System.out.println();
                             System.out.println("Your bills are: ");
-                            currentUser.printBills();
+                            currentUser.seeBills();
                             System.out.println("1- Pay");
                             System.out.println("2- Back");
                             System.out.print("Your choice: ");
@@ -220,17 +287,16 @@ public class InstaPaySystem implements  siginIn
                                     }
                                     else
                                     {
-                                        Database.database.instaDatabase.removeCredit(currentUser.getInstaID(),((bill)spare.elementAt(ccc-1)).getAmount());
+                                        database.instaDatabase.removeCredit(currentUser.getInstaID(),((bill)spare.elementAt(ccc-1)).getAmount());
                                         if(currentUser.getType().equals(userType.instaPayBankUser))
                                         {
-                                            Database.database.bankDatabase.removeCredit(((instaPayBankUser)currentUser).getBankAccountID(),((bill)spare.elementAt(ccc-1)).getAmount());
+                                            database.bankDatabase.removeCredit(((instaPayBankUser)currentUser).getBankAccountID(),((bill)spare.elementAt(ccc-1)).getAmount());
                                         }
                                         else
                                         {
-                                            Database.database.walletDatabase.removeCredit(currentUser.getMobileNumber(),((bill)spare.elementAt(ccc-1)).getAmount());
+                                            database.walletDatabase.removeCredit(currentUser.getMobileNumber(),((bill)spare.elementAt(ccc-1)).getAmount());
                                         }
                                         spare.elementAt(ccc-1).pay();
-                                        System.out.println("Your bill has been paid successfully!");
                                     }
                                 }
                                 currentUser.setBills(spare);
@@ -401,8 +467,8 @@ public class InstaPaySystem implements  siginIn
         }
         return null;
     }
-    //------------------------------------------------------------------------------------------------------------------        
-    // **This Section for InstaPayAPI**    
+    //------------------------------------------------------------------------------------------------------------------
+    // **This Section for InstaPayAPI**
 //    @Override
 //    public boolean transfertoInstaPay(int ID, double amount)
 //    {
@@ -438,7 +504,7 @@ public class InstaPaySystem implements  siginIn
 //        database.instaDatabase.removeCredit(currentUser.getInstaID(),amount);
 //        return true;
 //    }
-    
+
 
     //------------------------------------------------------------------------------------------------------------------
     // **This Section for WalletAPI**
@@ -483,7 +549,7 @@ public class InstaPaySystem implements  siginIn
 //        database.instaDatabase.removeCredit(currentUser.getInstaID(),amount);
 //        return true;
 //    }
-    
+//
 
 
     //------------------------------------------------------------------------------------------------------------------  
@@ -519,8 +585,8 @@ public class InstaPaySystem implements  siginIn
 //
 //        return true;
 //    }
-    
 
-    
+
+
 
 }
